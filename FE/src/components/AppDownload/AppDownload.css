@@ -1,0 +1,30 @@
+.app_download {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.app_download p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.app_download_platforms {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.app_download_platforms img {
+    width: 120px; /* Adjust size of store icons */
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.app_download_platforms img:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}

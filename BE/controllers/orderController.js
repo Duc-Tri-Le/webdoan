@@ -1,0 +1,146 @@
+import orderModel from "../models/orderModel.js";
+import userModel from "../models/userModel.js";
+import cartModel from "../models/cartModel.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const getOrder = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    const orders = await orderModel.findOne({ user_id: req.userId }).populate("items.foodId");
+    return res.json({ success: true, orders });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+
+const addOrder = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "No user found" });
+    }
+
+    const { discount_code, delivery_fee, address, payment_method, item } = req.body;
+    
+    // Tính tổng tiền
+    let total_price = item.reduce(
+      (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
+      0
+    );
+
+    const discount = isNaN(discount_code) ? 0 : discount_code; // Đảm bảo discount_code là số
+    const delivery = isNaN(delivery_fee) ? 0 : delivery_fee; // Đảm bảo delivery_fee là số
+
+    total_price = total_price - (total_price * discount) / 100 + delivery;
+
+    let payment_id = null;
+    let payment_status = false; // Mặc định đơn hàng chưa thanh toán
+
+    // Nếu chọn thanh toán online, tạo phiên Stripe
+    if (payment_method === "online") {
+      payment_status = true;
+      // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+      // const line_item = item.map((item) => ({
+      //   price_data: {
+      //     currency: "vnd",
+      //     product_data: { name: item.name },
+      //     unit_amount: item.price * 1000, // Stripe dùng đơn vị nhỏ nhất (VND -> VND*1000)
+      //   },
+      //   quantity: item.quantity,
+      // }));
+
+      // // Thêm phí vận chuyển vào đơn hàng
+      // line_item.push({
+      //   price_data: {
+      //     currency: "vnd",
+      //     product_data: { name: "Delivery Fee" },
+      //     unit_amount: delivery_fee * 1000,
+      //   },
+      //   quantity: 1,
+      // });
+
+      // const session = await stripe.checkout.sessions.create({
+      //   payment_method_types: ["card"],
+      //   line_item,
+      //   mode: "payment",
+      //   success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      //   cancel_rul: `${process.env.FRONTEND_URL}/cancel`,
+      // });
+
+      // payment_id = session.id; // Lưu ID giao dịch Stripe
+      // payment_status = true; // Xác nhận đơn hàng đã thanh toán
+    } else {
+      // Nếu là COD, đơn hàng sẽ chờ thanh toán khi giao hàng
+      payment_status = false;
+    }
+
+    const items = item.map(item => ({
+      foodId: item._id, 
+      quantity: item.quantity
+    }))
+
+    // Lưu đơn hàng vào database
+    const order = new orderModel({
+      user_id: req.userId,
+      discount_code,
+      total_price,
+      items,
+      delivery_fee,
+      address,
+      payment_status,
+      payment_method,
+      payment_id,
+    });
+
+    await order.save();
+    await cartModel.findOneAndDelete({ user_id: req.userId });
+
+    return res
+      .status(201)
+      .json({ success: true, message: "Order created", order , item});
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const removeOrder = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId)
+    if(!user){
+      return res.status(404).json({success:false, message : "no user"})
+    }
+    const {order_id} = req.body
+    const order = await orderModel.findByIdAndDelete(order_id)
+    res.status(200).json({success:true, data:order})
+  } catch (error) {
+    res.status(500).json({success:false, message:error})
+  }
+};
+
+const  getListAdminOrder = async (req, res) =>{
+  try {
+    const adminOrders = await orderModel
+      .find({})
+      .populate("items.foodId", "name price image");
+
+    // Kiểm tra nếu không có đơn hàng
+    if (!adminOrders.length) {
+      return res.status(404).json({ success: false, message: "No orders found" });
+    }
+    res.status(200).json({success:true, data: adminOrders})
+  } catch (error) {
+    res.status(500).json({success:false, error:error})
+  }
+}
+
+export { getOrder, addOrder, removeOrder, getListAdminOrder };

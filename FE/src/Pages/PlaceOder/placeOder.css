@@ -1,0 +1,208 @@
+.place-order {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    width: 100vw;
+    margin: auto;
+}
+
+.place-order-left,
+.cart-items,
+.place-order-right {
+    flex: 1;
+    /* Chia đều 3 phần */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 300px;
+    /* Đảm bảo không bị quá nhỏ */
+}
+
+
+.place-order-left .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.place-order-left input {
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #c5c5c5;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.place-order-left input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.multi-fields {
+    display: flex;
+    gap: 10px;
+}
+
+.multi-fields input {
+    flex: 1;
+}
+
+.cart-items {
+    margin-top: 20px;
+}
+
+.cart-items-title {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cart-items-title th,
+.cart-items-title td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-items-title th {
+    background: #007bff;
+    color: white;
+}
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.cart-total {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.cart-total-details {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Radio Button Styling */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.custom-radio {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+}
+
+.custom-radio input {
+    position: absolute;
+    opacity: 0;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    position: relative;
+    transition: background 0.3s ease-in-out;
+}
+
+.custom-radio:hover .checkmark {
+    border-color: #0056b3;
+}
+
+.custom-radio input:checked+.checkmark {
+    background-color: #007bff;
+}
+
+.custom-radio input:checked+.checkmark::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+/* 🛠️ Responsive Cho Tablet */
+@media (max-width: 1024px) {
+    .place-order {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .place-order-left,
+    .cart-items,
+    .place-order-right {
+        width: 90%;
+        min-width: unset;
+    }
+}
+
+/* 📱 Responsive Cho Mobile */
+@media (max-width: 768px) {
+    .place-order {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .place-order-left,
+    .cart-items,
+    .place-order-right {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .cart-items-title th,
+    .cart-items-title td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

@@ -1,0 +1,62 @@
+.list-wrapper {
+    width: 90%;
+    margin: 20px auto;
+    overflow-x: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f8f9fa;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-weight: bold;
+    color: #333;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.remove-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: #dc3545;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.add-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.add-btn:hover {
+    background-color: #c82333;
+}

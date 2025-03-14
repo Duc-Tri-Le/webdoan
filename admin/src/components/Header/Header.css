@@ -1,0 +1,28 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    /* Cách đều hai bên */
+    align-items: center;
+    background: #007bff;
+    padding: 10px 20px;
+    height: 60px;
+}
+
+.logo {
+    height: 40px;
+    /* Điều chỉnh kích thước logo */
+}
+
+.header-container img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    /* Làm tròn avatar */
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.header-container img:hover {
+    opacity: 0.8;
+    /* Hiệu ứng hover */
+}

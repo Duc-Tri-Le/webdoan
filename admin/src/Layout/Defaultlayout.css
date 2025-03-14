@@ -1,0 +1,50 @@
+/* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Bố cục tổng thể */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* Chiều cao full màn hình */
+}
+
+/* Header */
+.header {
+    background-color: #333;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+}
+
+/* Container chứa Sidebar & Content */
+.container {
+    display: flex;
+    flex: 1;
+    /* Chiếm hết phần còn lại của màn hình */
+}
+
+
+/* Nội dung chính */
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+/* Responsive: Sidebar thu gọn khi màn hình nhỏ */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        text-align: center;
+    }
+}

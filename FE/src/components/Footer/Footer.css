@@ -1,0 +1,44 @@
+.footer_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(224px,1fr) ); 
+    gap: 20px;
+    padding: 40px 60px;
+    background-color: #f5f5f5; /* Màu nền xám nhạt */
+    color: #333; /* Màu chữ đen nhạt */
+}
+
+.footer_section h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #d14a2b; /* Màu cam đỏ */
+}
+
+.footer_section p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.footer_section p:hover {
+    color: #d14a2b; /* Màu cam đỏ khi hover */
+}
+
+.footer_bottom {
+    background-color: #d14a2b; /* Màu cam đỏ */
+    text-align: center;
+    padding: 15px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+@media (max-width:750) {
+    .footer_container{
+        display: flex;
+        flex-direction: column;
+        gap: 35px;
+    }
+}

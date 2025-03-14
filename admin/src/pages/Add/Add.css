@@ -1,0 +1,117 @@
+/* Định dạng tổng thể */
+.Add-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.App-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+/* Upload ảnh */
+.upload-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.upload-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.upload-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Ảnh preview */
+.image-preview{
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.img-upload {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+}
+
+/* Nhập thông tin sản phẩm */
+.upload-info-input {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.upload-info-input p,
+.select-category p {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.upload-info-input input,
+.select-category select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Select danh mục */
+.select-category {
+    margin-bottom: 20px;
+}
+
+.select-category select {
+    cursor: pointer;
+}
+
+/* Nút Upload */
+.btn-upload {
+    text-align: center;
+}
+
+.btn-upload button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.btn-upload button:hover {
+    background-color: #218838;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .App-container {
+        width: 90%;
+        padding: 15px;
+    }
+}

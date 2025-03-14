@@ -1,0 +1,256 @@
+.Header {
+    display: flex;
+    padding: 20px 0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #fff;
+    width: 100%;
+}
+
+.Header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+}
+
+.Header .logo {
+    width: 150px;
+}
+
+.Header-menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    color: #49557e;
+    font-size: 18px;
+}
+
+.Header-menu .active {
+    padding-bottom: 2px;
+    border-bottom: 1px solid #007bff;
+
+}
+
+.Header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.Header-search {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 20px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.Header-search .img {
+    cursor: pointer;
+}
+
+/* .Header-search svg {
+    color: gray;
+    cursor: pointer;
+} */
+html {
+    scroll-behavior: smooth;
+}
+
+.icon-link {
+    position: relative;
+    display: inline-block;
+}
+
+.img {
+    font-size: 24px;
+    /* Điều chỉnh kích thước icon */
+    color: #333;
+}
+
+.sum_items {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(50%, -50%);
+}
+
+.Header-button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.Header-button:hover {
+    background: #0056b3;
+}
+
+.Header-menu #li {
+    position: relative;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+/* .Header-menu li::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: #007bff;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.Header-menu li:hover::after {
+    width: 100%;
+    left: 0;
+} */
+
+/* ----- Container chính ----- */
+.header-provide {
+    position: relative;
+    /* Để dropdown hiển thị tương đối với thẻ cha */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+/* ----- Icon chính ----- */
+.header-provide img {
+    width: 30px;
+    /* Kích thước icon */
+    height: 30px;
+    cursor: pointer;
+}
+
+/* ----- Dropdown menu ----- */
+.header-provide-dropdown {
+    position: absolute;
+    top: 100%;
+    /* Hiển thị ngay dưới icon */
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 160px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    list-style: none;
+}
+
+/* ----- Hiển thị dropdown khi hover vào .header-provide ----- */
+.header-provide:hover .header-provide-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* ----- Mục trong dropdown ----- */
+.header-provide-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* ----- Hover hiệu ứng ----- */
+.header-provide-dropdown li:hover {
+    background-color: #f5f5f5;
+}
+
+/* ----- Dòng phân cách ----- */
+.header-provide-dropdown hr {
+    margin: 5px 0;
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+}
+
+/* ----- Icon trong dropdown ----- */
+.header-provide-dropdown img {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width:1050px) {
+    .Header .logo {
+        width: 140px;
+    }
+
+    .Header-menu {
+        gap: 20px;
+        font-size: 17px;
+    }
+
+    .Header-right {
+        gap: 30px;
+    }
+
+    .Header-right .img {
+        width: 22px;
+    }
+
+    .Header-right button {
+        padding: 8px 25px;
+    }
+}
+
+@media (max-width:900px) {
+    .Header .logo {
+        width: 120px;
+    }
+
+    .Header-menu {
+        gap: 15px;
+        font-size: 16px;
+    }
+
+    .Header-right {
+        gap: 20px;
+    }
+
+    .Header-right .img {
+        width: 20px;
+    }
+
+    .Header-right button {
+        padding: 7px 20px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width:750px) {
+    .Header-menu {
+        display: none;
+    }
+}

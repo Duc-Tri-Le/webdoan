@@ -1,0 +1,78 @@
+.register_popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 350px;
+    z-index: 1000;
+}
+
+.register_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register_title {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 22px;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.register_input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.input_field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.register_button {
+    width: 100%;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.register_button:hover {
+    background: #0056b3;
+}
+
+.close_button {
+    margin-top: 10px;
+    background: #f44336;
+}
+
+.close_button:hover {
+    background: #d32f2f;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .register_popup {
+        width: 90%;
+    }
+}
