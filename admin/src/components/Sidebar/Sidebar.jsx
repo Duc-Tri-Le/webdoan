@@ -1,40 +1,96 @@
-import React from 'react'
-import './Sidebar.css'
-import { assets } from '../../assets/assets'
-import { NavLink } from 'react-router-dom'
-import { ConfigRoutes } from '../../Router/Router'
+import React from "react";
+import "./Sidebar.css";
+import { assets } from "../../assets/assets";
+import { ConfigRoutes } from "../../Router/Router";
 
 export default function Sidebar() {
+  const currentPath = window.location.pathname; // Lấy đường dẫn hiện tại
+
   return (
-    <div className='sidebar'>
-      <div className='sidebar-options'>
-        <NavLink to ={ConfigRoutes.add}  className='sidebar-option'>
-          <img src={assets.add} alt=''/>
+    <div className="sidebar">
+      <div className="sidebar-options">
+        <a
+          href={ConfigRoutes.add}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.add ? "active" : ""
+          }`}
+        >
+          <img src={assets.add} alt="" />
           <p>Add Items</p>
-        </NavLink>
-        <NavLink to = {ConfigRoutes.list} className='sidebar-option'>
-          <img src={assets.list_items} alt=''/>
+        </a>
+        <a
+          href={ConfigRoutes.list}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.list ? "active" : ""
+          }`}
+        >
+          <img src={assets.list_items} alt="" />
           <p>List Items</p>
-        </NavLink>
-        <NavLink to = {ConfigRoutes.update} className='sidebar-option'>
-          <img src={assets.order} alt=''/>
+        </a>
+        <a
+          href={ConfigRoutes.update}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.update ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
           <p>Update</p>
-        </NavLink>
-        <NavLink to = {ConfigRoutes.order_management} className='sidebar-option'>
-          <img src={assets.order} alt=''/>
+        </a>
+        <a
+          href={ConfigRoutes.order_management}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.order_management ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
           <p>Order Management</p>
-        </NavLink>
-        <NavLink to = {ConfigRoutes.return_management} className='sidebar-option'>
-          <img src={assets.order} alt=''/>
+        </a>
+        <a
+          href={ConfigRoutes.return_management}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.return_management ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
           <p>Return Management</p>
-        </NavLink><NavLink to = {ConfigRoutes.delivery_management} className='sidebar-option'>
-          <img src={assets.order} alt=''/>
-          <p>Delivery management</p>
-        </NavLink><NavLink to = {ConfigRoutes.sales_statistics} className='sidebar-option'>
-          <img src={assets.order} alt=''/>
-          <p>Sale Statistics</p>
-        </NavLink>   
+        </a>
+        <a
+          href={ConfigRoutes.cancel_management}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.cancel_management ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
+          <p>Cancel Management</p>
+        </a>
+        <a
+          href={ConfigRoutes.delivery_management}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.delivery_management ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
+          <p>Delivery Management</p>
+        </a>
+        <a
+          href={ConfigRoutes.shipped_management}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.shipped_management ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
+          <p>Shipped Management</p>
+        </a>
+        <a
+          href={ConfigRoutes.sales_statistics}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.sales_statistics ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
+          <p>Sales Statistics</p>
+        </a>
       </div>
     </div>
-  )
+  );
 }

@@ -133,4 +133,29 @@ const update_food = async (req, res) => {
   }
 };
 
-export { addFood, list_food, remove_food, update_food, detail_food };
+const search_food = async (req, res) => {
+  try {
+    const search = req.query.search ? req.query.search.toLowerCase() : "";
+    
+    if (!search) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Thiếu tham số tìm kiếm!" });
+    }
+    const foodSearch = await foodModel.find({
+      name: { $regex: search, $options: "i" },
+    });
+    res.status(200).json({ success: true, data: foodSearch });
+  } catch (error) {
+    res.status(500).json({ success: false, errors: error });
+  }
+};
+
+export {
+  addFood,
+  list_food,
+  remove_food,
+  update_food,
+  detail_food,
+  search_food,
+};

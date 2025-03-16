@@ -13,14 +13,14 @@ const getOrder = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    const orders = await orderModel.findOne({ user_id: req.userId }).populate("items.foodId");
+    const orders = await orderModel
+      .findOne({ user_id: req.userId })
+      .populate("items.foodId");
     return res.json({ success: true, orders });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
-
 
 const addOrder = async (req, res) => {
   try {
@@ -29,8 +29,9 @@ const addOrder = async (req, res) => {
       return res.status(404).json({ success: false, message: "No user found" });
     }
 
-    const { discount_code, delivery_fee, address, payment_method, item } = req.body;
-    
+    const { discount_code, delivery_fee, address, payment_method, item } =
+      req.body;
+
     // Tính tổng tiền
     let total_price = item.reduce(
       (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
@@ -84,10 +85,10 @@ const addOrder = async (req, res) => {
       payment_status = false;
     }
 
-    const items = item.map(item => ({
-      foodId: item._id, 
-      quantity: item.quantity
-    }))
+    const items = item.map((item) => ({
+      foodId: item._id,
+      quantity: item.quantity,
+    }));
 
     // Lưu đơn hàng vào database
     const order = new orderModel({
@@ -107,27 +108,45 @@ const addOrder = async (req, res) => {
 
     return res
       .status(201)
-      .json({ success: true, message: "Order created", order , item});
+      .json({ success: true, message: "Order created", order, item });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-const removeOrder = async (req, res) => {
-  try {
-    const user = await userModel.findById(req.userId)
-    if(!user){
-      return res.status(404).json({success:false, message : "no user"})
-    }
-    const {order_id} = req.body
-    const order = await orderModel.findByIdAndDelete(order_id)
-    res.status(200).json({success:true, data:order})
-  } catch (error) {
-    res.status(500).json({success:false, message:error})
-  }
-};
+// const removeOrder = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const orderId = id
 
-const  getListAdminOrder = async (req, res) =>{
+//     if (!orderId) {
+//       return res
+//         .status(400)
+//         .json({ success: false, message: "Order ID is required" });
+//     }
+
+//     const order = await orderModel.findByIdAndDelete(orderId);
+
+//     if (!order) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Order not found" });
+//     }
+
+//     res
+//       .status(200)
+//       .json({
+//         success: true,
+//         message: "Order removed successfully",
+//         data: order,
+//       });
+//   } catch (error) {
+//     console.error("Error removing order:", error);
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// };
+
+const getListAdminOrder = async (req, res) => {
   try {
     const adminOrders = await orderModel
       .find({})
@@ -135,12 +154,40 @@ const  getListAdminOrder = async (req, res) =>{
 
     // Kiểm tra nếu không có đơn hàng
     if (!adminOrders.length) {
-      return res.status(404).json({ success: false, message: "No orders found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "No orders found" });
     }
-    res.status(200).json({success:true, data: adminOrders})
+    res.status(200).json({ success: true, data: adminOrders });
   } catch (error) {
-    res.status(500).json({success:false, error:error})
+    res.status(500).json({ success: false, error: error });
   }
-}
+};
 
-export { getOrder, addOrder, removeOrder, getListAdminOrder };
+const confirmOrder = async (req, res) => {
+  try {
+    const { orderId, state } = req.body;
+    if (!orderId || !state) {
+      return res.state(404).json({ success: false, message: "no found" });
+    }
+
+    const updateOrder = await orderModel.findByIdAndUpdate(
+      orderId,
+      { state },
+      { new: true }
+    );
+    if (!updateOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json({
+      message: "Order updated successfully",
+      order: updateOrder,
+    });
+  } catch (error) {
+    console.error("Error updating order:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export { getOrder, addOrder, getListAdminOrder, confirmOrder };

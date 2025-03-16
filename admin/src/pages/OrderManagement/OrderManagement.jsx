@@ -1,23 +1,46 @@
 import React, { useContext } from "react";
 import { StoreContext } from "../../StoreContext/StoreContext";
 import "./OrderManagement.css";
+import { useNavigate } from "react-router-dom";
 
 const OrderManagement = () => {
-  const { URL, allOrder, setAllOrder } = useContext(StoreContext);
-  console.log(allOrder);
+  const { URL, allOrder, updateOrder, setState, state } = useContext(StoreContext);
+  // console.log(allOrder);
+  const navigate = useNavigate();
+
+  const handelChangeStateOrder = async (orderId, stateOrder) => {
+    const success = await updateOrder(orderId, stateOrder);
+    setState(stateOrder)
+    if (success) {
+      if (stateOrder === "on delivery") navigate("/delivery_management");
+      else if (stateOrder === "cancelled") navigate("/cancel_management");
+    }
+  };  
+
+  // const handelCancelOrder = async ({ orderId }) => {
+  //   const success = await cancelOrder(orderId);
+  //   if (success) {
+  //     navigate("/cancel_management");
+  //   }
+  // };
+
   return (
     <div className="order-management-wrapper">
       <div className="order-management-container">
         {allOrder.map((item) => {
           return (
-            <div className="order-management-item">
-              <span className="payment-status">
+            <div key={item._id} className="order-management-item">
+              <span
+                className={
+                  item.payment_status ? "payment-paid" : "payment-unpaid"
+                }
+              >
                 {item.payment_status ? "Paid" : "Unpaid"}
               </span>
               <div className="list-item">
                 {item.items.map((data) => {
                   return (
-                    <div>
+                    <div key={data.foodId._id}>
                       <div>
                         <img
                           src={
@@ -37,8 +60,26 @@ const OrderManagement = () => {
               <div className="order-management-under">
                 <span>{item.total_price}</span>
                 <div className="confirm-remove-order">
-                  <button>Confirm</button>
-                  <button>Remove</button>
+                  <button
+                    onClick={() =>
+                      handelChangeStateOrder(
+                        item._id,
+                        "on delivery",
+                      )
+                    }
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    onClick={() =>
+                      handelChangeStateOrder(
+                        item._id,
+                        "cancelled",
+                      )
+                    }
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>

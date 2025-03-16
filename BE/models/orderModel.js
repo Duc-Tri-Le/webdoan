@@ -32,7 +32,7 @@ const orderSchema = new mongoose.Schema(
     },
     state: {
       type: String,
-      enum: ["food processing", "shipped", "delivered", "cancelled", "returned"],
+      enum: ["food processing", "on delivery", "shipped", "delivered", "cancelled", "returned"],
       default: "food processing",
     },
     date: { type: Date, default: Date.now },
