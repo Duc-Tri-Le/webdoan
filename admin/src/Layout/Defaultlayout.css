@@ -1,53 +1,57 @@
-/* Định dạng chung */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .wrapper {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
 }
 
-/* Container chứa Sidebar và Content */
+.header {
+    width: 100%;
+    height: 60px;
+    /* Độ cao của header */
+    background-color: #ffffff;
+    /* Màu trắng */
+    color: #333;
+    /* Màu chữ tối hơn để dễ đọc */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng nhẹ */
+    border-bottom: 1px solid #ddd;
+    /* Viền dưới nhẹ */
+}
+
+
 .container {
     display: flex;
     flex: 1;
-    overflow: hidden;
 }
 
-/* Sidebar */
 .sidebar {
     width: 250px;
-    flex-shrink: 0;
+    height: calc(100vh - 60px);
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 60px;
+    transition: all 0.3s ease-in-out;
+    overflow-y: auto;
 }
 
-/* Content chính */
 .content {
     flex: 1;
-    /* Chiếm toàn bộ phần còn lại */
-    overflow-y: auto;
-    /* Cho phép cuộn khi nội dung dài */
     padding: 20px;
-    background-color: #f8f9fa;
-}
-
-/* Responsive - Khi màn hình nhỏ */
-@media screen and (max-width: 768px) {
-    .sidebar {
-        width: 200px;
-    }
-
-    .content {
-        padding: 15px;
-    }
-}
-
-/* Khi màn hình rất nhỏ (điện thoại) */
-@media screen and (max-width: 480px) {
-    .sidebar {
-        display: none;
-        /* Ẩn sidebar */
-    }
-
-    .content {
-        width: 100%;
-        padding: 10px;
-    }
+    background-color: #fff;
 }

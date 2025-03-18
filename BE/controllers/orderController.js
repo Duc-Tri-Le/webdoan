@@ -190,4 +190,32 @@ const confirmOrder = async (req, res) => {
   }
 };
 
-export { getOrder, addOrder, getListAdminOrder, confirmOrder };
+const searchOrder = async (req, res) => {
+  try {
+    const search = req.query.search?.trim();
+
+    if (!search) {
+      return res
+        .status(400)
+        .json({ success: false, message: "No order found" });
+    }
+
+    const data = await orderModel.find({
+      $or: [
+        { tracking_id: { $regex: search, $options: "i" } },
+        { "address.phone": { $regex: search, $options: "i" } },
+      ],
+    }).populate("items.foodId");
+
+    if (data.length === 0) {
+      return res.status(404).json({ success: false, message: "No order found" });
+    }
+
+    return res.status(200).json({ success: true, data: data });
+  } catch (error) {
+    console.error("Error searching order:", error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export { getOrder, addOrder, getListAdminOrder, confirmOrder, searchOrder };

@@ -1,7 +1,14 @@
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from "uuid"; // Import UUID để tạo mã ngẫu nhiên
 
 const orderSchema = new mongoose.Schema(
   {
+    tracking_id: {
+      type: String,
+      unique: true,
+      required: true,
+      default: () => `ORD-${uuidv4().slice(0, 8)}`, // Tạo mã tự động
+    },
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
@@ -32,7 +39,14 @@ const orderSchema = new mongoose.Schema(
     },
     state: {
       type: String,
-      enum: ["food processing", "on delivery", "shipped", "delivered", "cancelled", "returned"],
+      enum: [
+        "food processing",
+        "on delivery",
+        "shipped",
+        "delivered",
+        "cancelled",
+        "returned",
+      ],
       default: "food processing",
     },
     date: { type: Date, default: Date.now },
