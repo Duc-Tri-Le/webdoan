@@ -14,9 +14,10 @@ const getOrder = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
     const orders = await orderModel
-      .findOne({ user_id: req.userId })
-      .populate("items.foodId");
-    return res.json({ success: true, orders });
+      .find({ user_id: req.userId })
+      .populate("items.foodId")
+      .populate("address")
+    return res.json({ success: true, data: orders });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -107,7 +108,7 @@ const addOrder = async (req, res) => {
     await cartModel.findOneAndDelete({ user_id: req.userId });
 
     return res
-      .status(201)
+      .status(200)
       .json({ success: true, message: "Order created", order, item });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -200,15 +201,19 @@ const searchOrder = async (req, res) => {
         .json({ success: false, message: "No order found" });
     }
 
-    const data = await orderModel.find({
-      $or: [
-        { tracking_id: { $regex: search, $options: "i" } },
-        { "address.phone": { $regex: search, $options: "i" } },
-      ],
-    }).populate("items.foodId");
+    const data = await orderModel
+      .find({
+        $or: [
+          { tracking_id: { $regex: search, $options: "i" } },
+          { "address.phone": { $regex: search, $options: "i" } },
+        ],
+      })
+      .populate("items.foodId");
 
     if (data.length === 0) {
-      return res.status(404).json({ success: false, message: "No order found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "No order found" });
     }
 
     return res.status(200).json({ success: true, data: data });
@@ -218,4 +223,32 @@ const searchOrder = async (req, res) => {
   }
 };
 
-export { getOrder, addOrder, getListAdminOrder, confirmOrder, searchOrder };
+const detailOrder = async (req, res) => {
+  try {
+    const tracking_id = req.params.id;
+    if (!tracking_id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "no tracking_id" });
+    }
+    const order = await orderModel
+      .findOne({ tracking_id: tracking_id })
+      .populate("items.foodId")
+      .populate("user_id");
+    if (!order) {
+      return res.status(404).json({ success: false, message: "no find order" });
+    }
+    res.status(200).json({ success: true, data: order });
+  } catch (error) {
+    res.status(500).json({ success: false, errors: error });
+  }
+};
+
+export {
+  getOrder,
+  addOrder,
+  getListAdminOrder,
+  confirmOrder,
+  searchOrder,
+  detailOrder,
+};

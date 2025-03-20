@@ -26,6 +26,13 @@ function Header({ setShowLogin }) {
     navigate("/")
   }
 
+  const order = () => {
+    navigate("/user");
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+  };
+
   return (
     <div className="Header">
       <div className="Header-container">
@@ -37,8 +44,8 @@ function Header({ setShowLogin }) {
         />
         {/* duong link */}
         <ul className="Header-menu">
-          <Link
-            to="/"
+          <a
+            href="/"
             onClick={() => setMenu("home")}
             className={menu === "home" ? "active" : ""}
             id="li"
@@ -46,7 +53,7 @@ function Header({ setShowLogin }) {
             duration={500}
           >
             home
-          </Link>
+          </a>
           <Link
             to="/#exploreMenu"
             onClick={() => setMenu("menu")}
@@ -76,13 +83,13 @@ function Header({ setShowLogin }) {
           <div className="Header-search">
             <Search />
             <div className="icon-link">
-              <Link to="/cart">
+              <a href="/cart">
                 <FontAwesomeIcon
                   icon={faCartShopping}
                   style={{ padding: "20px" }}
                   className="img"
                 />
-              </Link>
+              </a>
               {sumItems() ? <p className="sum_items">{sumItems()}</p> : <></>}
             </div>
           </div>
@@ -97,7 +104,7 @@ function Header({ setShowLogin }) {
             <div className="header-provide">
               <img src={assets.add}/>
               <ul className="header-provide-dropdown">
-                <li><img src=""/><p>Order</p></li>
+                <li onClick={order}><img src=""/><p>Order</p></li>
                 <hr/>
                 <li onClick={logOut}><img src=""/>LogOut</li>
               </ul>

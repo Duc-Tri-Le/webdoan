@@ -25,6 +25,18 @@
     background-color: #ffffff;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between !important;
+    /* Đẩy 2 phần tử ra 2 bên */
+    align-items: center;
+    padding: 10px 15px;
+    background-color: transparent;
+    border: none;
+    box-shadow: none !important;
+    /* Xóa bóng đổ nếu có */
+}
+
 .payment-paid {
     color: green;
     font-weight: bold;
@@ -33,6 +45,19 @@
 .payment-unpaid {
     color: red;
     font-weight: bold;
+}
+
+.detail {
+    margin-left: auto;
+    /* Đẩy link detail về bên phải */
+    text-decoration: none;
+    /* Xóa gạch chân link */
+    color: #007bff;
+    font-weight: bold;
+}
+
+.detail:hover {
+    text-decoration: underline
 }
 
 .list-item div {

@@ -53,7 +53,7 @@ const Header = () => {
     handleSearch();
   }, [debounced]);
 
-  console.log(searchResults);
+  // console.log(searchResults);
   const handleChange = (e) => {
     const value = e.target.value;
     if (!value.startsWith(" ")) {
@@ -69,12 +69,11 @@ const Header = () => {
 
   // console.log(debounced);
   return (
-    <div className="header-container">
       <div className="header-wrapper">
         <div className="header-logo">
           <img className="logo" alt="" src={assets.logo} />
         </div>
-        <div className="heder-search">
+        <div className="header-search">
           <FontAwesomeIcon
             icon={faSearch}
             style={{ color: "gray", marginLeft: "8px", cursor: "pointer" }}
@@ -118,9 +117,8 @@ const Header = () => {
             ))}</div>
           )}
         </div>
-        <img src={assets.profile} alt="" />
+        <div className="header-profile"><img className= "profile" src={assets.profile} alt="" /></div>
       </div>
-    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import express from "express"
-import { addFood, list_food, remove_food,update_food, detail_food, search_food } from "../controllers/foodController.js"
+import { addFood, list_food, remove_food,update_food, detail_food, search_food, addReview } from "../controllers/foodController.js"
 import multer from "multer"
+import { authMiddleware } from "../middleware/auth.js";
 
 const foodRouter = express.Router();
 
@@ -21,6 +22,7 @@ foodRouter.delete("/remove-food/:id", remove_food)
 foodRouter.put("/update-food/:id",update_food)
 foodRouter.get("/detail-food/:id",detail_food)
 foodRouter.get("/search-food", search_food)
+foodRouter.patch("/add-review/:id",authMiddleware, addReview)
 
 
 

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { StoreContext } from "../../StoreContext/StoreContext";
 import "./OrderManagement.css";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const OrderManagement = () => {
   const { URL, allOrder, updateOrder, setState, state } = useContext(StoreContext);
@@ -17,12 +18,7 @@ const OrderManagement = () => {
     }
   };  
 
-  // const handelCancelOrder = async ({ orderId }) => {
-  //   const success = await cancelOrder(orderId);
-  //   if (success) {
-  //     navigate("/cancel_management");
-  //   }
-  // };
+  
 
   return (
     <div className="order-management-wrapper">
@@ -30,13 +26,18 @@ const OrderManagement = () => {
         {allOrder.map((item) => {
           return (
             <div key={item._id} className="order-management-item">
-              <span
-                className={
-                  item.payment_status ? "payment-paid" : "payment-unpaid"
-                }
-              >
-                {item.payment_status ? "Paid" : "Unpaid"}
-              </span>
+              <div className="header">
+                <span
+                  className={
+                    item.payment_status ? "payment-paid" : "payment-unpaid"
+                  }
+                >
+                  {item.payment_status ? "Paid" : "Unpaid"}
+                </span>
+                <Link to={`/detail_order/${item.tracking_id}`}>
+                  <p className="detail">....</p>
+                </Link>
+              </div>
               <div className="list-item">
                 {item.items.map((data) => {
                   return (

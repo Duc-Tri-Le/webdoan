@@ -3,7 +3,9 @@ const router = {
     cart:"/cart",
     profile:"/:nickname",
     placeOder:"/place-oder",
-    orderManage:"/order-manage"
+    orderManage:"/order-manage",
+    user:"/user",
+    detailFood: "/detail-food/:id"
 }
 
 export default router

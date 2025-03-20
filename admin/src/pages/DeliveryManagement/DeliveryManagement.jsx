@@ -1,21 +1,20 @@
 import React, { useContext } from "react";
 import { StoreContext } from "../../StoreContext/StoreContext";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const DeliveryManagement = () => {
   const { URL, allOrder, updateOrder, setState } = useContext(StoreContext);
   console.log(allOrder);
   const navigate = useNavigate();
 
-  const handelChangeStateOrder = async (orderId, stateOrder ) => {
+  const handelChangeStateOrder = async (orderId, stateOrder) => {
     const success = await updateOrder(orderId, stateOrder);
-    setState(stateOrder)
+    setState(stateOrder);
     if (success) {
-      if (stateOrder === "shipped") navigate("/shipped_management");
-      else if (stateOrder === "cancelled") navigate("/cancel_management");
+      if (stateOrder === "cancelled") navigate("/cancel_management");
     }
-  };  
-  
+  };
 
   return (
     <div className="order-management-wrapper">
@@ -24,14 +23,19 @@ const DeliveryManagement = () => {
           .filter((item) => item.state === "on delivery")
           .map((item) => {
             return (
-              <div key ={item._id} className="order-management-item">
-                <span
-                  className={
-                    item.payment_status ? "payment-paid" : "payment-unpaid"
-                  }
-                >
-                  {item.payment_status ? "Paid" : "Unpaid"}
-                </span>
+              <div key={item._id} className="order-management-item">
+                <div className="header">
+                  <span
+                    className={
+                      item.payment_status ? "payment-paid" : "payment-unpaid"
+                    }
+                  >
+                    {item.payment_status ? "Paid" : "Unpaid"}
+                  </span>
+                  <Link to={`/detail_order/${item.tracking_id}`}>
+                    <p className="detail">....</p>
+                  </Link>
+                </div>
                 <div className="list-item">
                   {item.items.map((data) => {
                     return (
@@ -57,20 +61,14 @@ const DeliveryManagement = () => {
                   <div className="confirm-remove-order">
                     <button
                       onClick={() =>
-                        handelChangeStateOrder(
-                          item._id,
-                         "shipped",
-                        )
+                        handelChangeStateOrder(item._id, "shipped")
                       }
                     >
                       Confirm
                     </button>
                     <button
                       onClick={() =>
-                        handelChangeStateOrder(
-                          item._id,
-                         "cancelled",
-                        )
+                        handelChangeStateOrder(item._id, "cancelled")
                       }
                     >
                       Cancel

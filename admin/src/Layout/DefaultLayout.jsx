@@ -6,14 +6,14 @@ import "./DefaultLayout.css"
 const DefaultLayout = ({ children }) => {
   return (
     <div className="wrapper">
-      <header className="header">
+      <div className="header">
         <Header />
-      </header>
+      </div>
       <div className="container">
-        <aside className="sidebar">
+        <div className="sidebar">
           <Sidebar />
-        </aside>
-        <main className="content">{children}</main>
+        </div>
+        <div className="content">{children}</div>
       </div>
     </div>
   );

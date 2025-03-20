@@ -1,12 +1,13 @@
 import foodModel from "../models/foodModel.js";
 import fs from "fs";
 import path from "path";
+import userModel from "../models/userModel.js";
 
 // add food
 const addFood = async (req, res) => {
   try {
-    console.log(req.body);
-    console.log(req.file);
+    // console.log(req.body);
+    // console.log(req.file);
 
     const image_URL = req.file ? `images/${req.file.filename}` : null;
     const { name, description, price, category } = req.body;
@@ -79,7 +80,7 @@ const remove_food = async (req, res) => {
 const detail_food = async (req, res) => {
   try {
     const foodId = req.params.id;
-    const detail = await foodModel.findById(foodId);
+    const detail = await foodModel.findById(foodId).populate("reviews.user_id");
     if (!detail) {
       return res
         .status(404)
@@ -87,7 +88,7 @@ const detail_food = async (req, res) => {
     }
     res.json({ success: true, data: detail });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Lỗi server!" });
+    res.status(500).json({ success: false, message: error });
   }
 };
 
@@ -136,7 +137,7 @@ const update_food = async (req, res) => {
 const search_food = async (req, res) => {
   try {
     const search = req.query.search ? req.query.search.toLowerCase() : "";
-    
+
     if (!search) {
       return res
         .status(400)
@@ -151,6 +152,44 @@ const search_food = async (req, res) => {
   }
 };
 
+const addReview = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const { review } = req.body; 
+    const userId = req.userId; 
+    
+ 
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(400).json({ success: false, message: "User không tồn tại!" });
+    }
+
+    const food = await foodModel.findByIdAndUpdate(
+      id,
+      {
+        $push: {  
+          reviews: {  
+            user_id: userId,
+            text: review,
+            createdAt: new Date() 
+          },
+        },
+      },
+      { new: true } 
+    ).populate("reviews.user_id");
+
+    if (!food) {
+      return res.status(404).json({ success: false, message: "Món ăn không tồn tại!" });
+    }
+
+    res.status(200).json({ success: true, data: food });
+  } catch (error) {
+    console.error("Lỗi khi thêm đánh giá:", error);
+    res.status(500).json({ success: false, message: "Lỗi server!", error });
+  }
+};
+
+
 export {
   addFood,
   list_food,
@@ -158,4 +197,5 @@ export {
   update_food,
   detail_food,
   search_food,
+  addReview,
 };

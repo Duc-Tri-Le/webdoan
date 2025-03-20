@@ -34,7 +34,7 @@ const StoreContextProvider = (props) => {
       }
       const data = await res.json();
       setCartItems(data.item);
-      console.log(data.item);
+      // console.log(data.item);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách giỏ hàng:", error.message);
     }
@@ -62,14 +62,18 @@ const StoreContextProvider = (props) => {
     }
   }, [token]);
 
-
   const addToCart = async (itemId) => {
     setCartItems((prev) => {
-      return prev.map((item) => {
-        return item.foodId._id === itemId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item;
-      });
+      const existingItem = prev.find((item) => item.foodId._id === itemId);
+      if (existingItem) {
+        return prev.map((item) =>
+          item.foodId._id === itemId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...prev, { foodId: { _id: itemId, price: 0 }, quantity: 1 }];
+      }
     });
 
     if (token) {

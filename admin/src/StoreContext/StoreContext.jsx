@@ -11,6 +11,7 @@ const StoreContextProvider = ({ children }) => {
       try {
         const orderData = await fetch(`${URL}/api/order/list-admin-order`, {
           method: "GET",
+          headers: { "Content-Type": "application/json" },
         });
         if (!orderData.ok) {
           throw new Error(`Error ${orderData.status}: ${orderData.statusText}`);

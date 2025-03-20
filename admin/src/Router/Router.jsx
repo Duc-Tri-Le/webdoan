@@ -6,6 +6,7 @@ import ReturnManagement from "../pages/ReturnManagement/ReturnManagement.jsx";
 import SaleStatistics from "../pages/SalesStatistics/SaleStatistics.jsx";
 import Update from "../pages/Update/Update.jsx";
 import CancelManagement from "../pages/CancelManagement/CancelManagement.jsx";
+import DetailOrder from "../pages/DetailOrder/DetailOrder.jsx";
 import ShippedManagement from "../pages/ShippedManagement/ShippedManagement.jsx";
 
 const ConfigRoutes = {
@@ -18,6 +19,7 @@ const ConfigRoutes = {
   sales_statistics: "/statistics",
   cancel_management: "/cancel_management",
   shipped_management: "/shipped_management",
+  detail_order: "/detail_order/:id",
 };
 
 const PrivateRouter = [
@@ -30,6 +32,7 @@ const PrivateRouter = [
   { path: ConfigRoutes.sales_statistics, component: SaleStatistics },
   { path: ConfigRoutes.cancel_management, component: CancelManagement },
   { path: ConfigRoutes.shipped_management, component: ShippedManagement },
+  { path: ConfigRoutes.detail_order, component: DetailOrder },
 ];
 
 export { PrivateRouter, ConfigRoutes };

@@ -24,6 +24,10 @@ const orderSchema = new mongoose.Schema(
         quantity: { type: Number, required: true },
       },
     ],
+    review:[{
+      text: { type: String, default: "" }, // Nội dung review
+      date: { type: Date, default: Date.now } // Thời gian tạo
+    }],
     discount_code: { type: Number, default: 0 }, // % giảm giá
     total_price: { type: Number, default: 0 },
     delivery_fee: { type: Number, required: true },
@@ -42,7 +46,6 @@ const orderSchema = new mongoose.Schema(
       enum: [
         "food processing",
         "on delivery",
-        "shipped",
         "delivered",
         "cancelled",
         "returned",

@@ -13,17 +13,20 @@ const FoodItem = ({ id, image, name, price, description }) => {
     }
     return acc;
   }, {});
-
+  // console.log(item_f);
+  // console.log(cartItems);
   // console.log(item_f);
 
   return (
     <div className="food_item">
       <div className="food_item_img_container">
-        <img
-          className="food_item_image"
-          src={`${URL}/${image}`}
-          alt="Ảnh món ăn"
-        />
+        <a href={`/detail-food/${id}`}>
+          <img
+            className="food_item_image"
+            src={`${URL}/${image}`}
+            alt="Ảnh món ăn"
+          />
+        </a>
         <div className="food_item_counter">
           {/* count */}
           {!item_f[id] ? (
