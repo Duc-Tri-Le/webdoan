@@ -3,15 +3,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
-import "./Update.css"
+import "./Update.css";
+import { useContext } from "react";
+import { StoreContext } from "../../StoreContext/StoreContext";
 
 const Update = () => {
-  const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const { token } = useContext(StoreContext);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const API_URL = "http://localhost:4000/api/food/";
+  const API_URL = "http://localhost:4000";
 
   const food = location.state?.food;
   const foodId = food?._id;
@@ -27,7 +30,14 @@ const Update = () => {
 
     const fetchFood = async () => {
       try {
-        const response = await axios.get(`${API_URL}detail-food/${foodId}`);
+        const response = await axios.get(
+          `${API_URL}/api/food/detail-food/${foodId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
         if (response.data.success) {
           setFoodData(response.data.data);
         }
@@ -41,10 +51,9 @@ const Update = () => {
   }, [foodId, navigate, food]);
 
   const handleFileChange = (e) => {
-    setFoodData({ ...foodData, image: e.target.files[0] });
     const imageFood = e.target.files[0];
-    setImage(URL.createObjectURL(imageFood));
     setImageFile(imageFood);
+    setImagePreview(URL.createObjectURL(imageFood));
   };
 
   const handleChange = (e) => {
@@ -59,43 +68,74 @@ const Update = () => {
       return;
     }
 
+    const authToken = token || localStorage.getItem("token");
+    if (!authToken) {
+      toast.error("Bạn chưa đăng nhập!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", String(foodData.name));
+    formData.append("price", String(foodData.price));
+    formData.append("description", String(foodData.description));
+    formData.append("category", String(foodData.category));
+
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ": ", pair[1]);
+    // }
     try {
       const response = await axios.put(
-        `${API_URL}update-food/${foodId}`,
-        foodData
+        `${API_URL}/api/food/update-food/${foodId}`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
+
       if (response.data.success) {
         toast.success("Cập nhật thành công!");
         navigate("/list-item");
+      } else {
+        toast.error("Cập nhật thất bại!");
       }
     } catch (error) {
-      toast.error("Cập nhật thất bại!");
+      toast.error("Cập nhật thất bại! Vui lòng thử lại.");
     }
   };
 
   if (!foodData) return <p>Loading...</p>;
-
+  // console.log(foodData);
   return (
     <div>
       <h2>Cập nhật món ăn</h2>
       <form onSubmit={handleUpdate}>
-      <label htmlFor="image" className="upload-btn">Chọn ảnh</label>
+        <label htmlFor="image" className="upload-btn">
+          Chọn ảnh
+        </label>
         <div className="upload-img">
           <input
             type="file"
             name="image"
-            id = "image"
+            id="image"
             onChange={handleFileChange}
             hidden
-            required
           />
-          {image ? (
-            <div>
-              <img src={image} alt="" className="img-preview" />
-            </div>
-          ) : (
-            <img src={assets.upload_image} alt="" className="img-upload" />
-          )}
+          <div>
+            {imagePreview ? (
+              <img src={imageFile} alt="" className="img-preview" />
+            ) : (
+              <img
+                src={`${API_URL}/${foodData.image}`}
+                alt=""
+                className="img-preview"
+              />
+            )}
+          </div>
         </div>
         <label>Tên:</label>
         <input

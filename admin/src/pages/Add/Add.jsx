@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Add.css";
 import { assets } from "../../assets/assets";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import CSS
+import {StoreContext} from "../../StoreContext/StoreContext"
 
 const Add = () => {
   const API_URL = "http://localhost:4000/api/food/";
   const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const {token} = useContext(StoreContext)
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -48,6 +50,9 @@ const Add = () => {
     try {
       const response = await fetch(`${API_URL}add`, {
         method: "POST",
+        headers :{
+          Authorization: token,
+        },
         body: formData,
       });
 

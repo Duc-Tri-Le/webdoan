@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { StoreContext } from "../../StoreContext/StoreContext";
+import { Link } from "react-router-dom";
 
 const CancelManagement = () => {
-  const {URL, allOrder, updateOrder } = useContext(StoreContext);
+  const { URL, allOrder, updateOrder } = useContext(StoreContext);
 
   return (
     <div className="order-management-wrapper">
@@ -19,6 +20,10 @@ const CancelManagement = () => {
                 >
                   {item.payment_status ? "Paid" : "Unpaid"}
                 </span>
+                <span className="order-state">{item.state}</span>
+                <Link to={`/detail_order/${item.tracking_id}`}>
+                  <p className="detail">....</p>
+                </Link>
                 <div className="list-item">
                   {item.items.map((data) => {
                     return (

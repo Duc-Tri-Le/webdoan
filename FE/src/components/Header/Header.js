@@ -36,12 +36,14 @@ function Header({ setShowLogin }) {
   return (
     <div className="Header">
       <div className="Header-container">
-        <img
-          src={assets.logo}
-          alt=""
-          style={{ height: "100px" }}
-          className="logo"
-        />
+        <a href="/">
+          <img
+            src={assets.logo}
+            alt=""
+            style={{ height: "100px" }}
+            className="logo"
+          />
+        </a>
         {/* duong link */}
         <ul className="Header-menu">
           <a
@@ -102,7 +104,7 @@ function Header({ setShowLogin }) {
             </button>
           ) : (
             <div className="header-provide">
-              <img src={assets.add}/>
+              <img src={assets.profile}/>
               <ul className="header-provide-dropdown">
                 <li onClick={order}><img src=""/><p>Order</p></li>
                 <hr/>

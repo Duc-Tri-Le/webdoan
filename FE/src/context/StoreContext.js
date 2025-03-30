@@ -8,6 +8,7 @@ const StoreContextProvider = (props) => {
   const [token, setToken] = useState("");
   const [food_list, setFoodList] = useState([]);
   const URL = "http://localhost:4000";
+  const [dataUSer, setDataUser] = useState({})
 
   const getListFood = async () => {
     try {
@@ -131,6 +132,20 @@ const StoreContextProvider = (props) => {
     return totalAmount;
   };
 
+  const getUSerIf = async () => {
+    try {
+      const response = await fetch(`${URL}/api/user/getUserIf`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json()
+      setDataUser(data.data)
+    } catch (error) {}
+  };
+
   const contextValue = {
     food_list,
     cartItems,
@@ -141,6 +156,9 @@ const StoreContextProvider = (props) => {
     setToken,
     token,
     URL,
+    getListCart,
+    getUSerIf,
+    dataUSer,
   };
 
   return (

@@ -4,7 +4,7 @@ import { StoreContext } from "../../context/StoreContext";
 import { useParams } from "react-router-dom";
 
 const DetailFood = () => {
-  const { URL, token } = useContext(StoreContext);
+  const { URL, token,addToCart,removeCart } = useContext(StoreContext);
   const { id: food_id } = useParams();
   const [infFood, setInfFood] = useState({});
   const inputRef = useRef(null); // Tạo ref
@@ -71,7 +71,7 @@ console.log(infFood);
         <span className="food-name">{infFood.name}</span>
         <span className="food-price">{infFood.price}</span>
         <div class="button-group">
-          <button class="add-art">Add cart</button>
+          <button class="add-art" onClick={() => addToCart(infFood._id)}>Add cart</button>
           <button class="buy">Buy</button>
         </div>
       </div>

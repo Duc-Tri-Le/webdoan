@@ -34,6 +34,7 @@ const OrderManagement = () => {
                 >
                   {item.payment_status ? "Paid" : "Unpaid"}
                 </span>
+                <span className="order-state">{item.state}</span>
                 <Link to={`/detail_order/${item.tracking_id}`}>
                   <p className="detail">....</p>
                 </Link>

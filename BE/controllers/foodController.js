@@ -106,7 +106,7 @@ const update_food = async (req, res) => {
     let image_URL = food.image;
     const { name, price, description, category } = req.body;
     const file_image = req.file;
-
+    console.log(req.body);
     // Nếu có ảnh mới, xóa ảnh cũ trước khi cập nhật
     if (file_image) {
       if (food.image) {
@@ -130,7 +130,8 @@ const update_food = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Cập nhật thành công!", data: food });
   } catch (error) {
-    return res.status(500).json({ success: false, message: "Lỗi server!" });
+    // console.error("Lỗi chi tiết:", error);
+    return res.status(500).json({ success: false, message: "Lỗi server!", error: error.message });
   }
 };
 

@@ -3,7 +3,7 @@ import Home from "../Pages/Home/home.js";
 import Cart from "../Pages/Cart/Cart.js";
 import PlaceOder from "../Pages/PlaceOder/PLaceOrder.js";
 import User from "../Pages/User/User.js";
-import OrderManage from "../Pages/Order_Manage/OrderManage.js";
+// import OrderManage from "../Pages/Order_Manage/OrderManage.js";
 import DetailFood from "../Pages/DetailFood/DetailFood.js";
 
 const publicRoutes = [
@@ -11,7 +11,7 @@ const publicRoutes = [
   { path: configRouter.cart, component: Cart },
   { path: configRouter.user, component: User },
   { path: configRouter.placeOder, component: PlaceOder },
-  { path: configRouter.orderManage, component: OrderManage },
+  // { path: configRouter.orderManage, component: OrderManage },
   { path: configRouter.detailFood, component: DetailFood },
 ];
 

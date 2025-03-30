@@ -1,14 +1,18 @@
-
 import axios from "axios";
 import { toast } from "react-toastify";
-const RemoveItem = async (foodId, getList) => {
+
+const RemoveItem = async (foodId, getList, token) => {
   const API_URL = "http://localhost:4000/api/food/";
-  const response = await axios.delete(`${API_URL}remove-food/${foodId}`);
+  const response = await axios.delete(`${API_URL}remove-food/${foodId}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
   try {
     if (response.data.success) {
       toast.success("Xóa thành công!");
       console.log(response.data);
-      getList()
+      getList();
     }
   } catch (error) {
     toast.error("that bai");
@@ -16,4 +20,4 @@ const RemoveItem = async (foodId, getList) => {
   }
 };
 
-export {RemoveItem};
+export { RemoveItem };

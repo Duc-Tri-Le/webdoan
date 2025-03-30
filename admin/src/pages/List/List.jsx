@@ -1,33 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./List.css";
-import axios from "axios";
-import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
 import { RemoveItem } from "../Remove/Remove";
 import { Link } from "react-router-dom";
+import { StoreContext } from "../../StoreContext/StoreContext";
 
 const List = () => {
-  const API_URL = "http://localhost:4000/api/food/";
-  const URL = "http://localhost:4000";
-  const [list, setList] = useState([]);
-  const [check, setCheck] = useState(false);
-  const getList = async () => {
-    try {
-      const response = await axios.get(`${API_URL}list-food`);
-      // console.log(response);
-      if (response.data.success) {
-        setList(response.data.data);
-        toast.success("da lay");
-      }
-    } catch (error) {
-      toast.error(error);
-    }
-  };
 
-  // console.log(list);
-  useEffect(() => {
-    getList();
-  }, []);
+  const URL = "http://localhost:4000";
+  const { token, list } = useContext(StoreContext);
 
   return (
     <div className="list-wrapper">
@@ -63,7 +44,7 @@ const List = () => {
                 <td>
                   <span
                     className="remove-btn"
-                    onClick={() => RemoveItem(item._id, getList)}
+                    onClick={() => RemoveItem(item._id, getList, token)}
                   >
                     <img src={assets.remove} alt="" />
                   </span>

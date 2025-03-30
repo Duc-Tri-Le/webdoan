@@ -3,7 +3,6 @@ import { useContext } from "react";
 import "./FoodDisplay.css";
 import { StoreContext } from "../../context/StoreContext";
 import FoodItem from "../FoodItem/FoodItem";
-import {Link} from "react-router-dom"
 
 const FoodDisplay = ({category}) => {
   const {food_list} = useContext(StoreContext);

@@ -4,7 +4,7 @@ import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
-  const { URL, cartItems, token, getTotalCartAmount } =
+  const { URL, cartItems, token, getTotalCartAmount, setCartItems, getListCart } =
     useContext(StoreContext);
 
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const PlaceOrder = () => {
       }
     });
 
-    console.log(orderItems);
+    // console.log(orderItems);
     let orderData = {
       address: data,
       item: orderItems,
@@ -47,7 +47,7 @@ const PlaceOrder = () => {
       discount_code: discount_code,
       payment_method,
     };
-    console.log(orderData);
+    // console.log(orderData);
 
     try {
       const response = await fetch(`${URL}/api/order/add-order`, {
@@ -71,7 +71,7 @@ const PlaceOrder = () => {
       console.log(`Lỗi: ${error.message}`);
     }
   };
-
+  // console.log(cartItems);
   return (
     <form className="place-order" onSubmit={placeOrder}>
       {/* left */}

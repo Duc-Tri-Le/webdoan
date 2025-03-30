@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import "./User.css";
 
 const User = () => {
-  const { URL, token } = useContext(StoreContext);
+  const { URL, token, getUSerIf, dataUSer } = useContext(StoreContext);
   const [listOrder, setListOrder] = useState([]);
   const [showOrder, setShowOrder] = useState(false);
   const [stateOrder, setStateOrder] = useState("All");
-  const [stateInfUser, setStateInfUser] = useState(false);
+  const [showUser, setShowUser] = useState(false);
+  const navigate = useNavigate();
+
   const getListOrder = async () => {
     try {
       const response = await fetch(`${URL}/api/order/list-order`, {
@@ -19,22 +22,74 @@ const User = () => {
       });
       const data = await response.json();
       setListOrder(data.data);
-      setShowOrder(true)
+      setShowOrder(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [editData, setEditData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    DOB: "",
+    role: "user",
+  });
+
+  useEffect(() => {
+    if (dataUSer) {
+      setEditData({
+        name: dataUSer.name || "",
+        email: dataUSer.email || "",
+        phone: dataUSer.phone || "",
+        DOB: dataUSer.DOB || "",
+        role: dataUSer.role || "user",
+      });
+    }
+  }, [dataUSer]);
+
+  const updateUSer = async () => {
+    try {
+      const update = await fetch(`${URL}/api/user/update`, {
+        method: "PATCH",
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editData),
+      });
+      const user = await update.json();
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (token) getListOrder()
+    if (token) {
+      getUSerIf();
+      getListOrder();
+    }
   }, [token]);
 
   const changeStateShowOrder = () => {
-    getListOrder();
     setStateOrder("All");
     setShowOrder(true);
   };
 
+  const handelAccount = () => {
+    setShowOrder(false);
+    setShowUser(true);
+  };
+
+  const handleSave = () => {
+    updateUSer();
+  };
+
+  const handleChange = (e) => {
+    setEditData({ ...editData, [e.target.name]: e.target.value });
+  };
+
+  // console.log(editData);
   const filteredOrders =
     stateOrder === "All"
       ? listOrder
@@ -46,8 +101,8 @@ const User = () => {
   return (
     <div className="wrapper">
       <div className="sidebar">
-        <div className="notification">Notification</div>
-        <div className="profile" onClick={() => setShowOrder(false)}>
+        {/* <div className="notification" onClick={() => setShowOrder(false)}>Notification</div> */}
+        <div className="profile" onClick={handelAccount}>
           <span>My account</span>
         </div>
         <div className="list-order" onClick={changeStateShowOrder}>
@@ -100,7 +155,12 @@ const User = () => {
                 <span className="overview-order-state">{order.state}</span>
                 <div className="overview-order-inf">
                   {order?.items.map((food) => (
-                    <div className="overview-order-inf-food">
+                    <div
+                      className="overview-order-inf-food"
+                      onClick={() =>
+                        navigate(`/detail-food/${food.foodId._id}`)
+                      }
+                    >
                       <span className="overview-order-inf-food-name">
                         {food.foodId.name}
                       </span>
@@ -111,15 +171,76 @@ const User = () => {
                   ))}
                 </div>
                 <div className="overview-order-foot">{order.total_price}</div>
+                <div className="button-overview">
+                  <button className="contact-seller">Contact Seller</button>
+                </div>
+                {order.state === "food processing" ? (
+                  <div className="button-overview">
+                    <button className="cancel-order">Cancel</button>
+                  </div>
+                ) : null}
+                {order.state === "delivered" ? (
+                  <div className="button-overview">
+                    <button className="return-order">Return</button>
+                  </div>
+                ) : null}
+                {order.state === "delivered" || order.state === "returned" || order.state === "cancelled"  ? (
+                  <div className="button-overview">
+                    <button className="buy-again">Buy Again</button>
+                  </div>
+                ) : null}
               </div>
             ))
           ) : (
             <div>NO ORDER</div>
           )}
         </div>
-      ) : (
-        <></>
-      )}
+      ) : null}
+      {showUser && !showOrder ? (
+        <div className="account-info">
+          <label>
+            <strong>Họ tên:</strong>
+          </label>
+          <input name="name" value={editData.name} onChange={handleChange} />
+
+          <label>
+            <strong>Email:</strong>
+          </label>
+          <input
+            name="email"
+            value={editData.email}
+            onChange={handleChange}
+            disabled
+          />
+
+          <label>
+            <strong>Số điện thoại:</strong>
+          </label>
+          <input
+            name="phone"
+            value={editData.phone}
+            onChange={handleChange}
+            placeholder="Chưa cập nhật"
+          />
+
+          <label>
+            <strong>Ngày sinh:</strong>
+          </label>
+          <input
+            name="DOB"
+            type="date"
+            value={editData.DOB}
+            onChange={handleChange}
+          />
+
+          <label>
+            <strong>Vai trò:</strong>
+          </label>
+          <input name="role" value={editData.role} disabled />
+
+          <button onClick={handleSave}>Lưu thay đổi</button>
+        </div>
+      ) : null}
     </div>
   );
 };

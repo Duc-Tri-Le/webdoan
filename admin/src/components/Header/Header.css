@@ -62,10 +62,80 @@
     cursor: pointer;
 }
 
-.header-profile .profile{
-    height: 50px;
+.header-provide {
+    position: relative;
+    /* Để dropdown hiển thị tương đối với thẻ cha */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
     cursor: pointer;
 }
+
+/* ----- Icon chính ----- */
+.header-provide img {
+    width: 30px;
+    /* Kích thước icon */
+    height: 30px;
+    cursor: pointer;
+}
+
+/* ----- Dropdown menu ----- */
+.header-provide-dropdown {
+    position: absolute;
+    top: 100%;
+    /* Hiển thị ngay dưới icon */
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 160px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    list-style: none;
+}
+
+/* ----- Hiển thị dropdown khi hover vào .header-provide ----- */
+.header-provide:hover .header-provide-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* ----- Mục trong dropdown ----- */
+.header-provide-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* ----- Hover hiệu ứng ----- */
+.header-provide-dropdown li:hover {
+    background-color: #f5f5f5;
+}
+
+/* ----- Dòng phân cách ----- */
+.header-provide-dropdown hr {
+    margin: 5px 0;
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+}
+
+/* ----- Icon trong dropdown ----- */
+.header-provide-dropdown img {
+    width: 20px;
+    height: 20px;
+}
+
 /* Animation quay tròn cho loading */
 @keyframes spin {
     0% {

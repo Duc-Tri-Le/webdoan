@@ -4,6 +4,8 @@ import { getCartUser, addCartUser, removeCartUser } from "../controllers/cartCon
 const cartRouter = express.Router()
 
 cartRouter.use(authMiddleware)
+
+//user
 cartRouter.get("/list-cart",getCartUser)
 cartRouter.post("/add-cart",addCartUser)
 cartRouter.delete("/remove-cart/:id",removeCartUser)

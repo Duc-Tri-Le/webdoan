@@ -1,10 +1,14 @@
 import { createContext, useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export const StoreContext = createContext(null);
 const StoreContextProvider = ({ children }) => {
   const [state, setState] = useState('');
   const [allOrder, setAllOrder] = useState([]);
   const URL = "http://localhost:4000";
+  const [list, setList] = useState([]);
+  const [token, setToken] = useState("")
 
   useEffect(() => {
     const getListOrder = async () => {
@@ -51,6 +55,34 @@ const StoreContextProvider = ({ children }) => {
     }
   };
 
+  const getList = async () => {
+    try {
+      const response = await axios.get(`${URL}/api/food/list-food`);
+      // console.log(response);
+      if (response.data.success) {
+        setList(response.data.data);
+        console.log("da lay");
+      }
+    } catch (error) {
+      console.log({error});
+    }
+  };
+
+  useEffect(()=>{
+    const loadData = async () => {
+      try {
+        const storedToken = localStorage.getItem("token")
+        if (storedToken) {
+          setToken(storedToken);
+        }
+        await getList();
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    }
+    loadData()
+  },[])
+
   // const cancelOrder = async (orderId) => {
   //   try {
   //     const cancel = await fetch(`${URL}/api/order/remove-order/${orderId}`, {
@@ -76,6 +108,9 @@ const StoreContextProvider = ({ children }) => {
     updateOrder,
     state,
     setState,
+    token,
+    setToken,
+    list,
   };
 
   return (

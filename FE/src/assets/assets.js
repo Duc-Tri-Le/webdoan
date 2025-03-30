@@ -13,6 +13,8 @@ import remove from "./remove.svg";
 import add from "./add.svg";
 import gg_play from "./gg_play.png";
 import app_store from "./app_store.jpg";
+import profile from "./profile.jpg";
+
 const assets = {
   logo,
   rating_start,
@@ -20,6 +22,7 @@ const assets = {
   add,
   gg_play,
   app_store,
+  profile
 };
 
 const menu_list = [
@@ -29,47 +32,4 @@ const menu_list = [
   { name: "duck", image: menu4 },
 ];
 
-const food_list = [
-  {
-    _id: "1",
-    name: "1",
-    image: food_1,
-    price: 12,
-    description: "food provides",
-    category: "salad",
-  },
-  {
-    _id: "2",
-    name: "2",
-    image: food_2,
-    price: 12,
-    description: "food provides",
-    category: "coca",
-  },
-  {
-    _id: "3",
-    name: "3",
-    image: food_3,
-    price: 12,
-    description: "food provides",
-    category: "duck",
-  },
-  {
-    _id: "4",
-    name: "4",
-    image: food_4,
-    price: 12,
-    description: "food provides",
-    category: "chicken",
-  },
-  {
-    _id: "5",
-    name: "5",
-    image: food_5,
-    price: 12,
-    description: "food provides",
-    category: "salad",
-  },
-];
-
-export { assets, menu_list, food_list };
+export { assets, menu_list };
