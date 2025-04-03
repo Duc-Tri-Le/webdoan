@@ -15,7 +15,7 @@ const getOrder = async (req, res) => {
     }
     const orders = await orderModel
       .find({ user_id: req.userId })
-      .populate("items.foodId")
+      .populate("item.foodId")
       .populate("address");
     return res.json({ success: true, data: orders });
   } catch (error) {
@@ -86,7 +86,7 @@ const addOrder = async (req, res) => {
       user_id: req.userId,
       discount_code,
       total_price,
-      items,
+      item:items,
       delivery_fee,
       address,
       payment_status,
@@ -142,7 +142,7 @@ const getListAdminOrder = async (req, res) => {
   try {
     const adminOrders = await orderModel
       .find({})
-      .populate("items.foodId", "name price image");
+      .populate("item.foodId", "name price image");
 
     // Kiểm tra nếu không có đơn hàng
     if (!adminOrders.length) {
@@ -218,7 +218,7 @@ const searchOrder = async (req, res) => {
           { "address.phone": { $regex: search, $options: "i" } },
         ],
       })
-      .populate("items.foodId");
+      .populate("item.foodId");
 
     if (data.length === 0) {
       return res
@@ -243,7 +243,7 @@ const detailOrder = async (req, res) => {
     }
     const order = await orderModel
       .findOne({ tracking_id: tracking_id })
-      .populate("items.foodId")
+      .populate("item.foodId")
       .populate("user_id");
     if (!order) {
       return res.status(404).json({ success: false, message: "no find order" });

@@ -39,6 +39,9 @@ const ManagementOrder = ({  stateOrder, setStateOrder, showOrder, setShowOrder }
     }
   }, [token]);
 
+  const handleBill = (order) =>{
+    navigate("/bill",{state : order})
+  }
   return (
     <div className="user-content-order">
       <div className="order-state">
@@ -55,10 +58,10 @@ const ManagementOrder = ({  stateOrder, setStateOrder, showOrder, setShowOrder }
 
       {filteredOrders.length > 0 ? (
         filteredOrders.map((order, index) => (
-          <div key={index} className="overview-order">
+          <div key={index} className="overview-order" onClick={() => handleBill(order)}>
             <span className="overview-order-state">{order.state}</span>
             <div className="overview-order-inf">
-              {order?.items.map((food) => (
+              {order?.item.map((food) => (
                 <div
                   key={food.foodId._id}
                   className="overview-order-inf-food"

@@ -38,7 +38,7 @@ const Management_Order = ({ item }) => {
           </Link>
         </div>
         <div className="list-item">
-          {item.items.map((data) => (
+          {item.item.map((data) => (
             <div key={data.foodId._id} className="one-item">
               <div>
                 <img

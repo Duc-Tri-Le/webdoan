@@ -1,0 +1,103 @@
+.bill-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bill-follow-order {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 0;
+    border-bottom: 2px solid #ddd;
+    color: #333;
+}
+
+.bill-give-order {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.bill-give-order p {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.bill-give-order span {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin: 2px 0;
+}
+
+.bill {
+    margin-top: 20px;
+}
+
+.bill-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.bill-detail {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.bill-item-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+.bill-detail span {
+    font-size: 14px;
+    color: #333;
+    min-width: 100px;
+    text-align: center;
+}
+
+.bill-under {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f1f1f1;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.bill-under span {
+    display: block;
+    padding: 5px 0;
+    font-weight: bold;
+    color: #444;
+}
+
+@media (max-width: 600px) {
+    .bill-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .bill-detail {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .bill-detail span {
+        text-align: left;
+        margin-top: 5px;
+    }
+}

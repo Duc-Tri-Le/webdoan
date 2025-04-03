@@ -62,8 +62,7 @@ const PlaceOrder = () => {
       }
 
       alert("Đặt hàng thành công!");
-      navigate("/");
-      setTimeout(() => window.location.reload(), 100);
+      navigate("/bill", {state : orderData});
     } catch (error) {
       console.log(`Lỗi: ${error.message}`);
     }
