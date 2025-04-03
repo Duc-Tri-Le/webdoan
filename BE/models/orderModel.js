@@ -52,12 +52,15 @@ const orderSchema = new mongoose.Schema(
       ],
       default: "food processing",
     },
-    date: { type: Date, default: Date.now },
     payment_status: { type: Boolean, default: false },
     payment_id: { type: String }, // ID giao dịch từ Stripe hoặc cổng thanh toán khác
     payment_method: { type: String, enum: ["cod", "online"], required: true },
-  },
-  { timestamps: true }
+    order_create: { type: String, default: null },
+    order_on_delivery: { type: String, default: null },
+    order_shipped: { type: String, default: null },
+    order_cancel: { type: String, default: null },
+    order_return: { type: String, default: null },
+  }
 );
 
 const orderModel =

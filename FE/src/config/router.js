@@ -4,8 +4,9 @@ const router = {
     profile:"/:nickname",
     placeOder:"/place-oder",
     orderManage:"/order-manage",
-    user:"/user",
-    detailFood: "/detail-food/:id"
+    managementUser:"/user",
+    detailFood: "/detail-food/:id",
+    bill: "/bill"
 }
 
 export default router

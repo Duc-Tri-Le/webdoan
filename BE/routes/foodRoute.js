@@ -19,12 +19,14 @@ const upload = multer({storage:storage})
 foodRouter.post("/add",authMiddleware, authorizeRoles("admin"),upload.single("image"), addFood)
 foodRouter.delete("/remove-food/:id",authMiddleware, authorizeRoles("admin"), remove_food)
 foodRouter.put("/update-food/:id",authMiddleware, authorizeRoles("admin"),upload.single("image"),update_food)
-foodRouter.get("/detail-food/:id",authMiddleware,authorizeRoles("admin"),detail_food)
-//staff
-foodRouter.get("/list-food", list_food)
+
 //user
+foodRouter.patch("/add-review/:id",authMiddleware, authorizeRoles("user"), addReview)
+
+//all
 foodRouter.get("/search-food", search_food)
-foodRouter.patch("/add-review/:id",authMiddleware, addReview)
+foodRouter.get("/detail-food/:id",detail_food)
+foodRouter.get("/list-food", list_food)
 
 
 

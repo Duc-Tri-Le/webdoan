@@ -73,7 +73,8 @@ const StoreContextProvider = (props) => {
             : item
         );
       } else {
-        return [...prev, { foodId: { _id: itemId, price: 0 }, quantity: 1 }];
+        const newItem = food_list.find((food) => food._id === itemId) || { _id: itemId, price: 0 };
+    return [...prev, { foodId: newItem, quantity: 1 }];
       }
     });
 
@@ -121,17 +122,6 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  const getTotalCartAmount = () => {
-    let totalAmount = 0;
-    for (const item of cartItems) {
-      // ✅ item là object thực sự
-      if (item.quantity > 0) {
-        totalAmount += item.foodId.price * item.quantity;
-      }
-    }
-    return totalAmount;
-  };
-
   const getUSerIf = async () => {
     try {
       const response = await fetch(`${URL}/api/user/getUserIf`, {
@@ -152,7 +142,6 @@ const StoreContextProvider = (props) => {
     setCartItems,
     addToCart,
     removeCart,
-    getTotalCartAmount,
     setToken,
     token,
     URL,

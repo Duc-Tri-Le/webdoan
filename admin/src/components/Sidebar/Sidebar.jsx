@@ -46,24 +46,6 @@ export default function Sidebar() {
           <p>Order Management</p>
         </a>
         <a
-          href={ConfigRoutes.return_management}
-          className={`sidebar-option ${
-            currentPath === ConfigRoutes.return_management ? "active" : ""
-          }`}
-        >
-          <img src={assets.order} alt="" />
-          <p>Return Management</p>
-        </a>
-        <a
-          href={ConfigRoutes.cancel_management}
-          className={`sidebar-option ${
-            currentPath === ConfigRoutes.cancel_management ? "active" : ""
-          }`}
-        >
-          <img src={assets.order} alt="" />
-          <p>Cancel Management</p>
-        </a>
-        <a
           href={ConfigRoutes.delivery_management}
           className={`sidebar-option ${
             currentPath === ConfigRoutes.delivery_management ? "active" : ""
@@ -80,6 +62,24 @@ export default function Sidebar() {
         >
           <img src={assets.order} alt="" />
           <p>Shipped Management</p>
+        </a>
+        <a
+          href={ConfigRoutes.cancel_management}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.cancel_management ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
+          <p>Cancel Management</p>
+        </a>
+        <a
+          href={ConfigRoutes.return_management}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.return_management ? "active" : ""
+          }`}
+        >
+          <img src={assets.order} alt="" />
+          <p>Return Management</p>
         </a>
         <a
           href={ConfigRoutes.sales_statistics}

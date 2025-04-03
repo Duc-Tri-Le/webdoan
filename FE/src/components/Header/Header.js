@@ -10,7 +10,8 @@ import { StoreContext } from "../../context/StoreContext";
 function Header({ setShowLogin }) {
   const [menu, setMenu] = useState("home");
   const { cartItems, token, setToken } = useContext(StoreContext);
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
 
   const sumItems = () => {
     let sum = 0;
@@ -20,17 +21,21 @@ function Header({ setShowLogin }) {
     return sum;
   };
 
-  const logOut = () =>{
-    localStorage.removeItem("token")
-    setToken("")
-    navigate("/")
-  }
+  const logOut = () => {
+    localStorage.removeItem("token");
+    setToken("");
+    navigate("/");
+  };
 
+  const user = () => {
+    navigate("/user", {state:{showUser:true}
+    });
+  };
+  
   const order = () => {
-    navigate("/user");
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
+    navigate("/user", {
+      state:{showOrder:true}
+    });
   };
 
   return (
@@ -104,11 +109,22 @@ function Header({ setShowLogin }) {
             </button>
           ) : (
             <div className="header-provide">
-              <img src={assets.profile}/>
+              <img src={assets.profile} />
               <ul className="header-provide-dropdown">
-                <li onClick={order}><img src=""/><p>Order</p></li>
-                <hr/>
-                <li onClick={logOut}><img src=""/>LogOut</li>
+                <li onClick={order}>
+                  <img src="" />
+                  <p>Order</p>
+                </li>
+                <hr />
+                <li onClick={user}>
+                  <img src="" />
+                  <p>User</p>
+                </li>
+                <hr />
+                <li onClick={logOut}>
+                  <img src="" />
+                  LogOut
+                </li>
               </ul>
             </div>
           )}

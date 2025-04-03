@@ -5,9 +5,12 @@ import { assets } from "../../assets/assets";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { URL, cartItems, removeCart, addToCart, getTotalCartAmount } =
+  const { URL, cartItems, removeCart, addToCart } =
     useContext(StoreContext);
   const navigate = useNavigate();
+  let totalPrice = cartItems.reduce((acc, item) => {
+    return acc + item.foodId.price * item.quantity
+  }, 0)
 
   return (
     <div className="cart">
@@ -74,7 +77,7 @@ const Cart = () => {
           <div className="cart-total-total">
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>{getTotalCartAmount()}</p>
+              <p>{totalPrice}</p>
             </div>
             <hr />
             <div className="cart-total-details">
@@ -84,7 +87,7 @@ const Cart = () => {
             <hr />
             <div className="cart-total-details">
               <p>Total</p>
-              <p>{getTotalCartAmount() + 20}</p>
+              <p>{totalPrice + 20}</p>
             </div>
             <hr />
           </div>

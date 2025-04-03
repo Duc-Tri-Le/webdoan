@@ -16,7 +16,7 @@ const getOrder = async (req, res) => {
     const orders = await orderModel
       .find({ user_id: req.userId })
       .populate("items.foodId")
-      .populate("address")
+      .populate("address");
     return res.json({ success: true, data: orders });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -30,19 +30,8 @@ const addOrder = async (req, res) => {
       return res.status(404).json({ success: false, message: "No user found" });
     }
 
-    const { discount_code, delivery_fee, address, payment_method, item } =
+    const { discount_code, delivery_fee, address, payment_method, item, total_price } =
       req.body;
-
-    // Tính tổng tiền
-    let total_price = item.reduce(
-      (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
-      0
-    );
-
-    const discount = isNaN(discount_code) ? 0 : discount_code; // Đảm bảo discount_code là số
-    const delivery = isNaN(delivery_fee) ? 0 : delivery_fee; // Đảm bảo delivery_fee là số
-
-    total_price = total_price - (total_price * discount) / 100 + delivery;
 
     let payment_id = null;
     let payment_status = false; // Mặc định đơn hàng chưa thanh toán
@@ -91,6 +80,7 @@ const addOrder = async (req, res) => {
       quantity: item.quantity,
     }));
 
+    const order_create = new Date();
     // Lưu đơn hàng vào database
     const order = new orderModel({
       user_id: req.userId,
@@ -102,6 +92,7 @@ const addOrder = async (req, res) => {
       payment_status,
       payment_method,
       payment_id,
+      order_create,
     });
 
     await order.save();
@@ -168,13 +159,32 @@ const getListAdminOrder = async (req, res) => {
 const confirmOrder = async (req, res) => {
   try {
     const { orderId, state } = req.body;
+    let payment_status = false;
     if (!orderId || !state) {
-      return res.state(404).json({ success: false, message: "no found" });
+      return res.status(404).json({ success: false, message: "no found" });
+    }
+
+    const order = await orderModel.findById(orderId);
+    if (order.payment_status === false && state === "shipped") {
+      payment_status = true;
+    } else {
+      payment_status = order.payment_status;
+    }
+
+    const orderUpdate = { state, payment_status };
+    if (state === "on delivery") {
+      orderUpdate.order_on_delivery = new Date();
+    } else if (state === "shipped") {
+      orderUpdate.order_shipped = new Date();
+    } else if (state === "cancelled") {
+      orderUpdate.order_cancel = new Date();
+    } else if (state === "return") {
+      orderUpdate.order_return = new Date();
     }
 
     const updateOrder = await orderModel.findByIdAndUpdate(
       orderId,
-      { state },
+      orderUpdate,
       { new: true }
     );
     if (!updateOrder) {

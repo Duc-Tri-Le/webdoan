@@ -1,0 +1,88 @@
+.management-search {
+    position: relative;
+    padding: 10px;
+}
+
+/* Container chứa input và icon */
+.search-input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+/* Style cho icon tìm kiếm */
+.search-icon {
+    color: gray;
+    cursor: pointer;
+}
+
+/* Input tìm kiếm */
+.input-search {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px;
+    margin-left: 8px;
+}
+
+/* Icon xoá (clear) */
+.clear-icon {
+    color: gray;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+/* Loading icon */
+.loading {
+    color: gray;
+    margin-left: 8px;
+}
+
+/* Dropdown kết quả tìm kiếm */
+.search-results {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Các item trong danh sách tìm kiếm */
+.order-items-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s ease;
+}
+
+.order-items-item:last-child {
+    border-bottom: none;
+}
+
+.order-items-item:hover {
+    background: #f5f5f5;
+}
+
+.order-items-item-image img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.order-items-item-name {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}

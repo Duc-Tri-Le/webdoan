@@ -1,14 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./placeOder.css";
 import { StoreContext } from "../../context/StoreContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
-  const { URL, cartItems, token, getTotalCartAmount, setCartItems, getListCart } =
-    useContext(StoreContext);
-
+  const { URL, cartItems, token } = useContext(StoreContext);
+  const location = useLocation();
+  const orderBuyAgain = location.state?.order || [];
   const navigate = useNavigate();
   const discount_code = 20;
+  const [orderItems, setOrderItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [payment_method, setPayment_method] = useState("cod");
 
   const [data, setData] = useState({
@@ -22,6 +24,9 @@ const PlaceOrder = () => {
     phone: "",
   });
 
+  const cartData = location.state?.order ? orderBuyAgain.items : cartItems;
+  // console.log(cartData);
+
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -30,24 +35,15 @@ const PlaceOrder = () => {
 
   const placeOrder = async (e) => {
     e.preventDefault();
-    let orderItems = [];
-    cartItems.map((item) => {
-      if (item.quantity > 0) {
-        let infoItem = { ...item.foodId, quantity: item.quantity };
-        orderItems.push(infoItem);
-      }
-    });
 
-    // console.log(orderItems);
     let orderData = {
       address: data,
       item: orderItems,
-      total_price: getTotalCartAmount() + 2,
+      total_price: totalPrice,
       delivery_fee: 20,
       discount_code: discount_code,
       payment_method,
     };
-    // console.log(orderData);
 
     try {
       const response = await fetch(`${URL}/api/order/add-order`, {
@@ -67,11 +63,43 @@ const PlaceOrder = () => {
 
       alert("Đặt hàng thành công!");
       navigate("/");
+      setTimeout(() => window.location.reload(), 100);
     } catch (error) {
       console.log(`Lỗi: ${error.message}`);
     }
   };
-  // console.log(cartItems);
+
+  useEffect(() => {
+    let timePrice = 0
+    if (location.state) { 
+      const updatedItems = orderBuyAgain.items
+        .map((item) => {
+          if (item.quantity > 0) {
+            timePrice += item.foodId.price * item.quantity;
+            return { ...item.foodId, quantity: item.quantity };
+          }
+          return null;
+        })
+        .filter((item) => item !== null); // Lọc các giá trị nul
+      setOrderItems(updatedItems);
+    } else {
+      const updatedItems = (cartItems || [])
+        .map((item) => {
+          if (item.quantity > 0) {
+            timePrice += item.foodId.price * item.quantity;
+            return { ...item.foodId, quantity: item.quantity };
+          }
+          return null;
+        })
+        .filter((item) => item !== null); // Lọc các giá trị null
+
+      setOrderItems(updatedItems);
+    }
+    timePrice = timePrice - (timePrice * discount_code)/100 + 20;
+    setTotalPrice(timePrice)
+  }, [location.state, cartItems]);
+
+  console.log(cartItems);
   return (
     <form className="place-order" onSubmit={placeOrder}>
       {/* left */}
@@ -155,7 +183,7 @@ const PlaceOrder = () => {
             </tr>
           </thead>
           <tbody>
-            {cartItems.map((item, index) => {
+            {cartData.map((item, index) => {
               if (item.quantity > 0) {
                 return (
                   <tr key={index}>
@@ -183,7 +211,7 @@ const PlaceOrder = () => {
           <div className="cart-total-total">
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>{getTotalCartAmount()}</p>
+              <p>{totalPrice -20}</p>
             </div>
             <hr />
             <div className="cart-total-details">
@@ -193,7 +221,7 @@ const PlaceOrder = () => {
             <hr />
             <div className="cart-total-details">
               <p>Total</p>
-              <p>{getTotalCartAmount() + 20}</p>
+              <p>{totalPrice}</p>
             </div>
             <hr />
           </div>

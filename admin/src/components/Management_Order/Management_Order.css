@@ -1,0 +1,90 @@
+.management-container {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.management-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.management-header span,
+.management-header .detail {
+    margin: 0 10px;
+}
+
+.payment-paid {
+    color: green;
+}
+
+.payment-unpaid {
+    color: red;
+}
+
+.order-state {
+    font-weight: bold;
+}
+
+.order-tracking-id {
+    font-style: italic;
+}
+
+.list-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.one-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.list-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    /* Ensure there's space between the image and the name */
+}
+
+.data-name,
+.data-quantity,
+.data-price {
+    margin: 5px 0;
+}
+
+.order-management-under {
+    margin-top: 20px;
+}
+
+.order-management-under-all {
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+}
+
+.order-management-price-time {
+    display: flex;
+    justify-content: space-between;
+}
+
+.confirm-remove-order {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.confirm-remove-order button {
+    padding: 10px;
+}
