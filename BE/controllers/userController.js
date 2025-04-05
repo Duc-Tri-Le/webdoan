@@ -174,23 +174,29 @@ const loginStaff = async (req, res) => {
 
 const grantRole = async (req, res) => {
   try {
-    const {role} = req.body
-    const {id : staffId} = req.params
-    const adminId = req.userId
+    const { role } = req.body;
+    const { id: staffId } = req.params;
+    const adminId = req.userId;
 
     const admin = await userModel.findById(adminId);
     if (!admin || admin.role !== "admin") {
-      return res.status(403).json({ success: false, message: "Không có quyền!" });
+      return res
+        .status(403)
+        .json({ success: false, message: "Không có quyền!" });
     }
 
     const user = await userModel.findById(staffId);
     if (!user) {
-      return res.status(404).json({ success: false, message: "Người dùng không tồn tại!" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Người dùng không tồn tại!" });
     }
 
     user.role = role;
     await user.save();
-    res.status(200).json({ success: true, message: "Cập nhật quyền thành công!", user });
+    res
+      .status(200)
+      .json({ success: true, message: "Cập nhật quyền thành công!", user });
   } catch (error) {
     res.status(500).json({ success: false, message: "Lỗi server!", error });
   }
@@ -198,44 +204,70 @@ const grantRole = async (req, res) => {
 
 const createStaff = async (req, res) => {
   try {
-    const { email, name, password, role } = req.body;
-    const staff = userModel.findOne({ email });
-    if (staff) {
-      return res.status(400).json({ success: false, message: "staff exist" });
+    const { email, name, password, role, mnv } = req.body;
+
+    const staffExist = await userModel.findOne({ email });
+    if (staffExist) {
+      return res.status(400).json({ success: false, message: "Nhân viên đã tồn tại" });
     }
+
+
     if (!validator.isEmail(email)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Email không hợp lệ!" });
+      return res.status(400).json({ success: false, message: "Email không hợp lệ!" });
     }
-    const passwordHash = bcrypt.hash(password, 10)
-    const staffNew = new userModel({
-      name: name,
-      email: email,
+
+  
+    if (!mnv || mnv.length < 3) {
+      return res.status(400).json({ success: false, message: "Mã nhân viên không hợp lệ!" });
+    }
+
+  
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const newStaff = new userModel({
+      name,
+      email,
       password: passwordHash,
-      role: role,
+      role,
+      mnv,
     });
-    await staffNew.save()
 
-    const token = createToken(staffNew._id, staffNew.role)
+    await newStaff.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
-      message: "Đăng ký thành công!",
+      message: "Tạo nhân viên thành công!",
       data: {
-        id: staffNew._id,
-        name: staffNew.name,
-        email: staffNew.email,
-        role: staffNew.role,
-        token,
+        id: newStaff._id,
+        name: newStaff.name,
+        email: newStaff.email,
+        role: newStaff.role,
+        mnv: newStaff.mnv,
       },
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Lỗi server!", error: error.message });
+    console.error("Lỗi khi tạo nhân viên:", error);
+    res.status(500).json({ success: false, message: "Lỗi server!", error: error.message });
   }
 };
+
+
+const getListStaff = async (req, res) => {
+  try {
+    const staff = await userModel.find({ role: { $in: ["shipper", "seller"] } });
+
+    if (staff.length === 0) {
+      return res.status(400).json({ success: false, message: "Không có nhân viên nào" });
+    }
+
+    return res.status(200).json({ success: true, data: staff });
+  } catch (error) {
+    console.error("Lỗi khi lấy danh sách nhân viên:", error);
+    res.status(500).json({ success: false, errors: error.message });
+  }
+};
+
+
 
 export {
   loginUSer,
@@ -245,4 +277,5 @@ export {
   loginStaff,
   grantRole,
   createStaff,
+  getListStaff,
 };

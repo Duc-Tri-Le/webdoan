@@ -58,14 +58,14 @@ const ManagementOrder = ({  stateOrder, setStateOrder, showOrder, setShowOrder }
 
       {filteredOrders.length > 0 ? (
         filteredOrders.map((order, index) => (
-          <div key={index} className="overview-order" onClick={() => handleBill(order)}>
+          <div key={index} className="overview-order">
             <span className="overview-order-state">{order.state}</span>
-            <div className="overview-order-inf">
+            <span className="overview-order-stacking_id">{order.tracking_id}</span>
+            <div className="overview-order-inf" onClick={() => handleBill(order)}>
               {order?.item.map((food) => (
                 <div
                   key={food.foodId._id}
                   className="overview-order-inf-food"
-                  onClick={() => navigate(`/detail-food/${food.foodId._id}`)}
                 >
                   <span className="overview-order-inf-food-name">{food.foodId.name}</span>
                   <span className="overview-order-inf-food-quantity">{food.quantity}</span>

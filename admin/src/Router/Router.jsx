@@ -8,6 +8,9 @@ import Update from "../pages/Update/Update.jsx";
 import CancelManagement from "../pages/CancelManagement/CancelManagement.jsx";
 import DetailOrder from "../pages/DetailOrder/DetailOrder.jsx";
 import ShippedManagement from "../pages/ShippedManagement/ShippedManagement.jsx";
+import CreateStaff from "../pages/CreateStaff/CreateStaff.jsx";
+import GrantRole from "../pages/GrantRole/GrantRole.jsx";
+import ListStaff from "../pages/listStaff/ListStaff.jsx";
 
 const ConfigRoutes = {
   add: "/",
@@ -20,6 +23,9 @@ const ConfigRoutes = {
   cancel_management: "/cancel_management",
   shipped_management: "/shipped_management",
   detail_order: "/detail_order/:id",
+  create_staff: "/create_staff",
+  list_staff: "/list_staff",
+  grant_role_staff: "/grant_role_staff:id",
 };
 
 const PrivateRouter = [
@@ -33,6 +39,9 @@ const PrivateRouter = [
   { path: ConfigRoutes.cancel_management, component: CancelManagement },
   { path: ConfigRoutes.shipped_management, component: ShippedManagement },
   { path: ConfigRoutes.detail_order, component: DetailOrder },
+  { path: ConfigRoutes.create_staff, component: CreateStaff },
+  { path: ConfigRoutes.grant_role_staff, component: GrantRole },
+  { path: ConfigRoutes.list_staff, component: ListStaff },
 ];
 
 export { PrivateRouter, ConfigRoutes };

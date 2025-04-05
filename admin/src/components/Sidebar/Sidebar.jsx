@@ -82,6 +82,13 @@ export default function Sidebar() {
           <p>Return Management</p>
         </a>
         <a
+          href={ConfigRoutes.list_staff}
+          className={`sidebar-option ${
+            currentPath === ConfigRoutes.list_staff ? "active" : ""
+          }`}
+        > <img src={assets.order} alt="" />
+        <p>List Staff</p></a>
+        <a
           href={ConfigRoutes.sales_statistics}
           className={`sidebar-option ${
             currentPath === ConfigRoutes.sales_statistics ? "active" : ""

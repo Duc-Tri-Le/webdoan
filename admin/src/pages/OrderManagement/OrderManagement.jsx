@@ -16,7 +16,7 @@ const OrderManagement = () => {
       <div className="order-management-container">
         {searchReach.length > 0 ? (searchReach.map((item) => {
           return (
-           <Management_Order item = {item}/>
+           <Management_Order item = {item} />
           );
         })):(
           allOrder.map((item) => {

@@ -6,7 +6,8 @@ import {
   updateUSer,
   loginStaff,
   grantRole,
-  createStaff
+  createStaff,
+  getListStaff
 } from "../controllers/userController.js";
 import { authMiddleware,authorizeRoles } from "../middleware/auth.js";
 
@@ -17,8 +18,9 @@ userRouter.post("/login", loginUSer);
 //staff
 userRouter.post("/login/staff", loginStaff)
 //admin
-userRouter.post("/grantRole/:id", grantRole)
+userRouter.patch("/grantRole/:id", grantRole)
 userRouter.post("/createStaff", createStaff)
+userRouter.get("/listStaff", getListStaff)
 //all
 userRouter.patch("/update", authMiddleware, updateUSer);
 userRouter.get("/getUserIf", authMiddleware, getUserIf);

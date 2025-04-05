@@ -24,7 +24,7 @@ const PlaceOrder = () => {
     phone: "",
   });
 
-  const cartData = location.state?.order ? orderBuyAgain.items : cartItems;
+  const cartData = location.state?.order ? orderBuyAgain.item : cartItems;
   // console.log(cartData);
 
   const handleChange = (event) => {
@@ -71,7 +71,7 @@ const PlaceOrder = () => {
   useEffect(() => {
     let timePrice = 0
     if (location.state) { 
-      const updatedItems = orderBuyAgain.items
+      const updatedItems = orderBuyAgain.item
         .map((item) => {
           if (item.quantity > 0) {
             timePrice += item.foodId.price * item.quantity;

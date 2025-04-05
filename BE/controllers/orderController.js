@@ -30,8 +30,14 @@ const addOrder = async (req, res) => {
       return res.status(404).json({ success: false, message: "No user found" });
     }
 
-    const { discount_code, delivery_fee, address, payment_method, item, total_price } =
-      req.body;
+    const {
+      discount_code,
+      delivery_fee,
+      address,
+      payment_method,
+      item,
+      total_price,
+    } = req.body;
 
     let payment_id = null;
     let payment_status = false; // Mặc định đơn hàng chưa thanh toán
@@ -86,7 +92,7 @@ const addOrder = async (req, res) => {
       user_id: req.userId,
       discount_code,
       total_price,
-      item:items,
+      item: items,
       delivery_fee,
       address,
       payment_status,
@@ -203,30 +209,32 @@ const confirmOrder = async (req, res) => {
 
 const searchOrder = async (req, res) => {
   try {
-    const search = req.query.search?.trim();
+    const search = req.query.search?.trim().toLowerCase();
 
     if (!search) {
       return res
         .status(400)
-        .json({ success: false, message: "No order found" });
+        .json({ success: false, message: "Missing search keyword" });
     }
 
-    const data = await orderModel
-      .find({
-        $or: [
-          { tracking_id: { $regex: search, $options: "i" } },
-          { "address.phone": { $regex: search, $options: "i" } },
-        ],
-      })
-      .populate("item.foodId");
+    const allOrders = await orderModel.find().populate("item.foodId");
 
-    if (data.length === 0) {
+    const filteredOrders = allOrders.filter(
+      (order) =>
+        order.tracking_id?.toLowerCase().includes(search) ||
+        order.address?.phone?.toLowerCase().includes(search) ||
+        order.item.some((item) =>
+          item.foodId?.name?.toLowerCase().includes(search)
+        )
+    );
+
+    if (filteredOrders.length === 0) {
       return res
         .status(404)
         .json({ success: false, message: "No order found" });
     }
 
-    return res.status(200).json({ success: true, data: data });
+    return res.status(200).json({ success: true, data: filteredOrders });
   } catch (error) {
     console.error("Error searching order:", error);
     return res.status(500).json({ success: false, message: error.message });

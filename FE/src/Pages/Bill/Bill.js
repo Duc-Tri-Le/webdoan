@@ -1,17 +1,19 @@
 import React, { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import "./Bill.css"
 const Bill = () => {
   const { state } = useLocation();
   const orderData = state || {};
   const { URL } = useContext(StoreContext);
+  const navigate = useNavigate();
+  // console.log(orderData);
 
-  console.log(orderData);
   return (
     <div className="bill-container">
       <div className="bill-follow-order">
-        <span></span>
+        <span>{orderData.tracking_id}</span>
+        <span>{orderData.state}</span>
       </div>
       <div className="bill-give-order">
         <p>Địa chỉ nhận hàng</p>
@@ -26,18 +28,19 @@ const Bill = () => {
       </div>
       <div className="bill">
         {orderData?.item?.length > 0 ? (
-          orderData.item.map((item, index) => (
-            <div key={index} className="bill-item">
+          orderData.item.map((food, index) => (
+            <div key={index} className="bill-food">
               <div className="bill-detail">
                 <div className="bill-item-image">
                   <img
-                    src={item.image ? `${URL}/${item.image}` : "/fallback.jpg"}
-                    alt={item.name || "No name"}
+                    src={food.foodId.image ? `${URL}/${food.foodId.image}` : "/fallback.jpg"}
+                    alt={food.foodId.name || "No name"}
+                    onClick={() => navigate(`/detail-food/${food.foodId._id}`)}
                   />
                 </div>
-                <span>{item.name || "Không có tên"}</span>
-                <span>{item.quantity || 0}</span>
-                <span>{item.price || 0} VND</span>
+                <span>{food.foodId.name || "Không có tên"}</span>
+                <span>{food.quantity || 0}</span>
+                <span>{food.foodId.price * food.quantity || 0} VND</span>
               </div>
             </div>
           ))
@@ -48,7 +51,7 @@ const Bill = () => {
         <div className="bill-under">
           <span>Tổng tiền: {orderData?.total_price || 0} VND</span>
           <span>Phí giao hàng: {orderData?.delivery_fee || 0} VND</span>
-          <span>Mã giảm giá: {orderData?.discount_code || "Không có"}</span>
+          <span>Mã giảm giá: {orderData?.discount_code || "Không có"}%</span>
           <span>Phương thức thanh toán: {orderData?.payment_method}</span>
         </div>
       </div>

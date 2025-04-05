@@ -84,8 +84,8 @@ console.log(infFood);
       <div className="review-food">
         {infFood?.reviews?.map((data, index) => (
           <div key={index}>
-            <span className="review-food-name">{data.user_id.name}</span>
-            <div className="review-food-text">{data.text}</div>
+            <span className="review-food-name">{data?.user_id?.name || "AmongUs"}</span>
+            <div className="review-food-text">{data?.text || ""}</div>
           </div>
         ))}
         <div className="input-review">
