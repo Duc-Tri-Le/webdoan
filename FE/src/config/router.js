@@ -6,7 +6,8 @@ const router = {
     orderManage:"/order-manage",
     managementUser:"/user",
     detailFood: "/detail-food/:id",
-    bill: "/bill"
+    bill: "/bill",
+    completePayment:"/complete-payment"
 }
 
 export default router

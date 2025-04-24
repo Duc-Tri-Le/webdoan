@@ -3,20 +3,23 @@ import "./home.css";
 import Typical_dish from "../../components/Typical_dish/typicalDish";
 import ExploreMenu from "../../components/ExploreMenu/exploreMenu";
 import FoodDisplay from "../../components/FoodDisplay/FoodDisplay";
+import SortBy from "../../components/SortBY/SortBy";
 import { StoreContext } from "../../context/StoreContext";
 
 const Home = () => {
   const [category, setCategory] = useState("All");
-  const {getListCart} = useContext(StoreContext)
+  const [sortBy, setSortBy] = useState("default");
+  const { getListCart } = useContext(StoreContext);
 
   useEffect(() => {
-    getListCart()
-  },[])
+    getListCart();
+  }, []);
   return (
     <div className="home_container">
       <Typical_dish />
       <ExploreMenu category={category} setCategory={setCategory} />
-      <FoodDisplay category={category}/>
+      <SortBy sortBy={sortBy} setSortBy={setSortBy}/>
+      <FoodDisplay category={category} sortBy={sortBy} />
     </div>
   );
 };

@@ -4,16 +4,26 @@ import "./FoodDisplay.css";
 import { StoreContext } from "../../context/StoreContext";
 import FoodItem from "../FoodItem/FoodItem";
 
-const FoodDisplay = ({category}) => {
+const FoodDisplay = ({category, sortBy} ) => {
   const {food_list} = useContext(StoreContext);
+  
+  let filterFood = food_list.filter(item => category ==="All" || category === item.category)
+
+  if (sortBy === "tăng dần") {
+    filterFood.sort((a, b) => a.price - b.price); 
+  } else if (sortBy === "giảm dần") {
+    filterFood.sort((a, b) => b.price - a.price); 
+  } else if (sortBy === "đánh giá cao") {
+    filterFood.sort((a, b) => b.rating - a.rating);
+  } else if(sortBy === ""){
+    filterFood = [...food_list];
+  }
   
   return (
     <div className="food_display" id="food_display">
       <h2>Top dishes</h2>
       <div className="food_display_list">
-        {food_list.map((item, index) => {
-          // {console.log(category,item.category);}
-          if(category ==="All" || category === item.category){
+        {filterFood.map((item, index) => {         
             return (
                 <FoodItem
                 key = {index}
@@ -21,10 +31,11 @@ const FoodDisplay = ({category}) => {
                   name={item.name}
                   image= {item.image}
                   price={item.price}
+                  rating ={item.rating}
                   description={item.description}
                 />
             );
-          }
+
         })}
       </div>
     </div>

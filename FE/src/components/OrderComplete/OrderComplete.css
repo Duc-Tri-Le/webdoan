@@ -1,0 +1,117 @@
+/* OrderComplete.css */
+
+section {
+    margin: 24px 0;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #374151;
+}
+
+.detail-state-order {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.bill-order-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background-color: #ffffff;
+    width: 120px;
+    text-align: center;
+}
+
+.bill-order-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #d1d5db;
+    border-radius: 50%;
+    margin-bottom: 6px;
+}
+
+.bill-order-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    width: 20px;
+    height: 2px;
+    background-color: #9ca3af;
+    transform: translateY(-50%);
+}
+
+.bill-order-icon:last-child::after {
+    content: none;
+}
+
+.bill-order-text {
+    font-weight: 600;
+    font-size: 14px;
+    color: #111827;
+}
+
+.bill-order-time {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.bill-give-order {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 15px;
+    color: #374151;
+}
+
+.bill {
+    margin-top: 12px;
+}
+
+.bill-food {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+}
+
+.bill-detail {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+}
+
+.bill-item-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+}
+
+.bill-under {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #d1d5db;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 500;
+    color: #1f2937;
+}

@@ -25,7 +25,7 @@ const ConfigRoutes = {
   detail_order: "/detail_order/:id",
   create_staff: "/create_staff",
   list_staff: "/list_staff",
-  grant_role_staff: "/grant_role_staff:id",
+  grant_role_staff: "/grant_role_staff",
 };
 
 const PrivateRouter = [

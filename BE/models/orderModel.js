@@ -1,67 +1,69 @@
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from "uuid"; // Import UUID để tạo mã ngẫu nhiên
 
-const orderSchema = new mongoose.Schema(
-  {
-    tracking_id: {
-      type: String,
-      unique: true,
-      required: true,
-      default: () => `ORD-${uuidv4().slice(0, 8)}`, // Tạo mã tự động
-    },
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-      required: true,
-    },
-    item: [
-      {
-        foodId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "food",
-          required: true,
-        },
-        quantity: { type: Number, required: true },
+const orderSchema = new mongoose.Schema({
+  tracking_id: {
+    type: String,
+    unique: true,
+    required: true,
+    default: () => `ORD-${uuidv4().slice(0, 8)}`, // Tạo mã tự động
+  },
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+  },
+  item: [
+    {
+      foodId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "food",
+        required: true,
       },
+      quantity: { type: Number, required: true },
+    },
+  ],
+  review: [
+    {
+      text: { type: String, default: "" },
+      date: { type: Date, default: Date.now },
+    },
+  ],
+  discount_code: { type: Number, default: 0 },
+  total_price: { type: Number, default: 0 },
+  delivery_fee: { type: Number, required: true },
+  address: {
+    first_name: String,
+    last_name: String,
+    street: String,
+    city: String,
+    state: String,
+    zip_code: String,
+    country: String,
+    phone: String,
+  },
+  state: {
+    type: String,
+    enum: [
+      "food processing",
+      "on delivery",
+      "shipped",
+      "cancelled",
+      "returned",
     ],
-    review:[{
-      text: { type: String, default: "" }, // Nội dung review
-      date: { type: Date, default: Date.now } // Thời gian tạo
-    }],
-    discount_code: { type: Number, default: 0 }, // % giảm giá
-    total_price: { type: Number, default: 0 },
-    delivery_fee: { type: Number, required: true },
-    address: {
-      first_name: String,
-      last_name: String,
-      street: String,
-      city: String,
-      state: String,
-      zip_code: String,
-      country: String,
-      phone: String,
-    },
-    state: {
-      type: String,
-      enum: [
-        "food processing",
-        "on delivery",
-        "delivered",
-        "cancelled",
-        "returned",
-      ],
-      default: "food processing",
-    },
-    payment_status: { type: Boolean, default: false },
-    payment_id: { type: String }, // ID giao dịch từ Stripe hoặc cổng thanh toán khác
-    payment_method: { type: String, enum: ["cod", "online"], required: true },
-    order_create: { type: String, default: null },
-    order_on_delivery: { type: String, default: null },
-    order_shipped: { type: String, default: null },
-    order_cancel: { type: String, default: null },
-    order_return: { type: String, default: null },
-  }
-);
+    default: "food processing",
+  },
+  payment_status: { type: Boolean, default: false },
+  payment_id: { type: String },
+  payment_method: { type: String, enum: ["cod", "online"], required: true },
+  order_create: { type: String, default: null },
+  order_on_delivery: { type: String, default: null },
+  order_shipped: { type: String, default: null },
+  order_cancel: { type: String, default: null },
+  order_return: { type: String, default: null },
+  order_reviewed: { type: String, default: null },
+  order_receive: { type: String, default: null },
+});
 
 const orderModel =
   mongoose.models.order || mongoose.model("order", orderSchema);

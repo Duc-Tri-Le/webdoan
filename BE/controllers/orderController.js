@@ -1,6 +1,7 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import cartModel from "../models/cartModel.js";
+import createStripe from "../stripe/createStripe.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -41,45 +42,7 @@ const addOrder = async (req, res) => {
 
     let payment_id = null;
     let payment_status = false; // Mặc định đơn hàng chưa thanh toán
-
-    // Nếu chọn thanh toán online, tạo phiên Stripe
-    if (payment_method === "online") {
-      payment_status = true;
-      // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-      // const line_item = item.map((item) => ({
-      //   price_data: {
-      //     currency: "vnd",
-      //     product_data: { name: item.name },
-      //     unit_amount: item.price * 1000, // Stripe dùng đơn vị nhỏ nhất (VND -> VND*1000)
-      //   },
-      //   quantity: item.quantity,
-      // }));
-
-      // // Thêm phí vận chuyển vào đơn hàng
-      // line_item.push({
-      //   price_data: {
-      //     currency: "vnd",
-      //     product_data: { name: "Delivery Fee" },
-      //     unit_amount: delivery_fee * 1000,
-      //   },
-      //   quantity: 1,
-      // });
-
-      // const session = await stripe.checkout.sessions.create({
-      //   payment_method_types: ["card"],
-      //   line_item,
-      //   mode: "payment",
-      //   success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      //   cancel_rul: `${process.env.FRONTEND_URL}/cancel`,
-      // });
-
-      // payment_id = session.id; // Lưu ID giao dịch Stripe
-      // payment_status = true; // Xác nhận đơn hàng đã thanh toán
-    } else {
-      // Nếu là COD, đơn hàng sẽ chờ thanh toán khi giao hàng
-      payment_status = false;
-    }
+    let order;
 
     const items = item.map((item) => ({
       foodId: item._id,
@@ -87,8 +50,9 @@ const addOrder = async (req, res) => {
     }));
 
     const order_create = new Date();
+
     // Lưu đơn hàng vào database
-    const order = new orderModel({
+    order = new orderModel({
       user_id: req.userId,
       discount_code,
       total_price,
@@ -101,9 +65,16 @@ const addOrder = async (req, res) => {
       order_create,
     });
 
-    await order.save();
-    await cartModel.findOneAndDelete({ user_id: req.userId });
+    await order.save(); // Lưu đơn hàng
 
+    // Nếu chọn thanh toán online, tạo phiên Stripe
+    if (payment_method === "online") {
+      // Dùng Stripe thanh toán thẻ
+      const { url } = await createStripe(item, delivery_fee,discount_code, req.userId, order._id.toString());
+      return res.status(200).json({ url });
+    } 
+
+    await cartModel.findOneAndDelete({ user_id: req.userId }); // Xóa giỏ hàng sau khi tạo đơn
     return res
       .status(200)
       .json({ success: true, message: "Order created", order, item });
@@ -243,14 +214,14 @@ const searchOrder = async (req, res) => {
 
 const detailOrder = async (req, res) => {
   try {
-    const tracking_id = req.params.id;
-    if (!tracking_id) {
+    const orderId = req.params.id;
+    if (!orderId) {
       return res
         .status(400)
-        .json({ success: false, message: "no tracking_id" });
+        .json({ success: false, message: "no orderId" });
     }
     const order = await orderModel
-      .findOne({ tracking_id: tracking_id })
+      .findOne({_id: orderId })
       .populate("item.foodId")
       .populate("user_id");
     if (!order) {

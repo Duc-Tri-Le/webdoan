@@ -33,7 +33,7 @@ const addFood = async (req, res) => {
 // list food
 const list_food = async (req, res) => {
   try {
-    const foods = await foodModel.find({});
+    const foods = await foodModel.find({}).populate("reviews");
     res.json({ success: true, data: foods });
   } catch (error) {
     console.log(error);
@@ -161,7 +161,7 @@ const search_food = async (req, res) => {
 const addReview = async (req, res) => {
   try {
     const { id } = req.params;
-    const { review } = req.body;
+    const { review, rating_food } = req.body;
     const userId = req.userId;
 
     const user = await userModel.findById(userId);
@@ -170,7 +170,6 @@ const addReview = async (req, res) => {
         .status(400)
         .json({ success: false, message: "User không tồn tại!" });
     }
-
     const food = await foodModel
       .findByIdAndUpdate(
         id,
@@ -180,6 +179,7 @@ const addReview = async (req, res) => {
               user_id: userId,
               text: review,
               createdAt: new Date(),
+              rating_review: rating_food,
             },
           },
         },
@@ -193,9 +193,43 @@ const addReview = async (req, res) => {
         .json({ success: false, message: "Món ăn không tồn tại!" });
     }
 
+    const totalRating = food.reviews.reduce((sum, review) => {
+      return sum + review.rating_review;
+    }, 0);
+    const avgRating = (totalRating / food.reviews.length).toFixed(1);
+    food.rating = avgRating;
+    await food.save();
+
     res.status(200).json({ success: true, data: food });
   } catch (error) {
     console.error("Lỗi khi thêm đánh giá:", error);
+    res.status(500).json({ success: false, message: "Lỗi server!", error });
+  }
+};
+
+const removeReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reviewId } = req.body;
+    const food = foodModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $pull: {
+            reviews: { _id: reviewId },
+          },
+        },
+        { new: true }
+      )
+      .populate("reviews.user_id");
+
+    if (!food) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Không tìm thấy món ăn!" });
+    }
+    res.status(200).json({ success: true, data: food });
+  } catch (error) {
     res.status(500).json({ success: false, message: "Lỗi server!", error });
   }
 };

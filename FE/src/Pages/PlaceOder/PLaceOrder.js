@@ -36,6 +36,18 @@ const PlaceOrder = () => {
   const placeOrder = async (e) => {
     e.preventDefault();
 
+    if (
+      !data.first_name ||
+      !data.last_name ||
+      !data.street ||
+      !data.city ||
+      !data.country ||
+      !data.phone
+    ) {
+      alert("Vui lòng điền đầy đủ thông tin giao hàng.");
+      return;
+    }
+
     let orderData = {
       address: data,
       item: orderItems,
@@ -46,31 +58,53 @@ const PlaceOrder = () => {
     };
 
     try {
-      const response = await fetch(`${URL}/api/order/add-order`, {
-        method: "POST",
-        headers: {
-          Authorization: token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
+      if (payment_method === "online") {
+        // Chuyển hướng người dùng đến Stripe thanh toán
+        const response = await fetch(
+          `${URL}/api/order/add-order`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: token,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderData),
+          }
+        );
 
-      const result = await response.json();
+        const result = await response.json();
+        if (response.ok) {
+          window.location.href = result.url; // Chuyển hướng tới trang thanh toán Stripe
+        } else {
+          throw new Error(result.message || "Lỗi thanh toán");
+        }
+      } else {
+        // Xử lý thanh toán COD
+        const response = await fetch(`${URL}/api/order/add-order`, {
+          method: "POST",
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        });
 
-      if (!response.ok) {
-        throw new Error(result.message || "Đặt hàng thất bại");
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.message || "Đặt hàng thất bại");
+        }
+
+        alert("Đặt hàng thành công!");
+        navigate("/bill", { state: orderData });
       }
-
-      alert("Đặt hàng thành công!");
-      navigate("/bill", {state : orderData});
     } catch (error) {
       console.log(`Lỗi: ${error.message}`);
     }
   };
 
   useEffect(() => {
-    let timePrice = 0
-    if (location.state) { 
+    let timePrice = 0;
+    if (location.state) {
       const updatedItems = orderBuyAgain.item
         .map((item) => {
           if (item.quantity > 0) {
@@ -94,8 +128,8 @@ const PlaceOrder = () => {
 
       setOrderItems(updatedItems);
     }
-    timePrice = timePrice - (timePrice * discount_code)/100 + 20;
-    setTotalPrice(timePrice)
+    timePrice = timePrice - (timePrice * discount_code) / 100 + 20;
+    setTotalPrice(timePrice);
   }, [location.state, cartItems]);
 
   console.log(cartItems);
@@ -210,7 +244,7 @@ const PlaceOrder = () => {
           <div className="cart-total-total">
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>{totalPrice -20}</p>
+              <p>{totalPrice - 20}</p>
             </div>
             <hr />
             <div className="cart-total-details">

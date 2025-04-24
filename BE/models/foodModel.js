@@ -14,12 +14,15 @@ const foodSchema = new mongoose.Schema(
           ref: "user",
           required: true,
         },
-        text: { type: String, default: "" }, // Nội dung review
-        date: { type: Date, default: Date.now }, // Thời gian tạo
+        text: { type: String, default: "" },
+        date: { type: Date, default: Date.now },
+        rating_review:{type:Number, default:5},
       },
     ],
+    rating: { type: Number, default: 5 },
+    created_at: { type: String, default: null },
+    updated_at :{ type: String, default: null },
   },
-  { timestamps: true } // Tự động thêm `createdAt` và `updatedAt`
 );
 
 const foodModel = mongoose.models.food || mongoose.model("food", foodSchema);

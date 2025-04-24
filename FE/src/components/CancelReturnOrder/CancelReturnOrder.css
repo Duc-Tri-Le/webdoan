@@ -1,0 +1,80 @@
+/* CancelReturnOrder.css */
+
+section {
+    margin: 20px 0;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #374151;
+}
+
+.detail-state-order {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.bill-order-text {
+    position: relative;
+    padding: 8px 16px;
+    background-color: #e5e7eb;
+    border-radius: 20px;
+    font-weight: 500;
+    margin: 0 10px;
+}
+
+.bill-order-text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    width: 20px;
+    height: 2px;
+    background-color: #9ca3af;
+    transform: translateY(-50%);
+}
+
+.bill-order-text:last-child::after {
+    content: none;
+}
+
+
+.bill-food {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.bill-detail {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+    font-size: 15px;
+}
+
+.bill-item-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+}
+
+.bill-under {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #d1d5db;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    color: #1f2937;
+}

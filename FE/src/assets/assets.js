@@ -3,12 +3,7 @@ import menu1 from "./menu1.png";
 import menu2 from "./menu2.png";
 import menu3 from "./menu3.png";
 import menu4 from "./menu4.png";
-import food_1 from "./food_1.png";
-import food_2 from "./food_2.png";
-import food_3 from "./food_3.png";
-import food_4 from "./food_4.png";
-import food_5 from "./food_5.png";
-import rating_start from "./rating_start.png";
+import star from "./star.png";
 import remove from "./remove.svg";
 import add from "./add.svg";
 import gg_play from "./gg_play.png";
@@ -17,12 +12,12 @@ import profile from "./profile.jpg";
 
 const assets = {
   logo,
-  rating_start,
+  star,
   remove,
   add,
   gg_play,
   app_store,
-  profile
+  profile,
 };
 
 const menu_list = [
@@ -32,4 +27,8 @@ const menu_list = [
   { name: "duck", image: menu4 },
 ];
 
-export { assets, menu_list };
+const arrange = ["price-asc", "price-desc", "rating-desc"];
+
+const start_rating = [1, 2, 3, 4, 5];
+
+export { assets, menu_list, arrange, start_rating };

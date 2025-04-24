@@ -1,13 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Header.css";
 import { assets } from "../../assets/assets.js";
-import { useDebounce } from "../Hook/useDebounce.jsx";
 import { StoreContext } from "../../StoreContext/StoreContext.jsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTimes,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
+
 
 const Header = ({showLogin, setShowLogin}) => {
   const { URL } = useContext(StoreContext);
@@ -15,10 +10,8 @@ const Header = ({showLogin, setShowLogin}) => {
   const handleUserB = () => {};
   const logOut = () => {
     setShowLogin(true)
-  };
-  const handleClear = () => {
-    setSearchValue("");
-    setShowResults(false);
+    localStorage.removeItem("token");
+    setToken("");
   };
 
   // console.log(debounced);

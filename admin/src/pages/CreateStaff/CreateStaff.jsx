@@ -1,15 +1,15 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { StoreContext } from "../../StoreContext/StoreContext";
 
 const CreateStaff = () => {
   const navigate = useNavigate();
-  const { URL } = useContext(StoreContext);
+  const { URL, token } = useContext(StoreContext);
   const [data, setData] = useState({
     email: "",
     name: "",
     password: "",
-    role: "",
+    role: "seller",
     mnv: "",
   });
 
@@ -18,7 +18,7 @@ const CreateStaff = () => {
     const value = e.target.value;
     setData((prevData) => ({ ...prevData, [name]: value }));
   };
-
+  console.log(data);
   const handleCreateStaff = async (e) => {
     e.preventDefault();
     try {
@@ -26,13 +26,14 @@ const CreateStaff = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
         },
         body: JSON.stringify(data),
       });
 
       const result = await response.json();
       if (result.success) {
-        navigate("/list_staff"); // Điều hướng đến danh sách nhân viên
+        navigate("/list_staff");
       } else {
         alert(result.message);
       }
@@ -81,7 +82,12 @@ const CreateStaff = () => {
         </div>
         <div className="select-role">
           <p>Vai trò</p>
-          <select name="role" value={data.role} onChange={handleChange} required>
+          <select
+            name="role"
+            value={data.role}
+            onChange={handleChange}
+            required
+          >
             <option value="seller">Seller</option>
             <option value="shipper">Shipper</option>
           </select>
