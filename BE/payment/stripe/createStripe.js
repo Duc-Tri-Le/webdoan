@@ -1,4 +1,4 @@
-import stripe from "../utils/stripeUtils.js";
+import stripe from "../../utils/stripeUtils.js";
 
 const createStripe = async (item, delivery_fee, discount_code, userId, orderId) => {
   const line_items = item.map((item) => ({

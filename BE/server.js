@@ -5,7 +5,7 @@ import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRouter.js";
 import orderRouter from "./routes/orderRouter.js";
-import handelWebHook from "./stripe/webhook.js";
+import handelWebHook from "./payment/stripe/webhook.js"
 import bodyParser from "body-parser";
 import dotenv from "dotenv"
 //app

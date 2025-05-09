@@ -63,6 +63,8 @@ const orderSchema = new mongoose.Schema({
   order_return: { type: String, default: null },
   order_reviewed: { type: String, default: null },
   order_receive: { type: String, default: null },
+  typePayment: { type: String, default: null },
+  paymentGateway : {type: String, default:null}
 });
 
 const orderModel =

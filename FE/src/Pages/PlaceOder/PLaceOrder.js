@@ -12,6 +12,7 @@ const PlaceOrder = () => {
   const [orderItems, setOrderItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [payment_method, setPayment_method] = useState("cod");
+  const [paymentGateway, setPaymentGateway] = useState("");
 
   const [data, setData] = useState({
     first_name: "",
@@ -55,25 +56,24 @@ const PlaceOrder = () => {
       delivery_fee: 20,
       discount_code: discount_code,
       payment_method,
+      paymentGateway,
     };
 
     try {
       if (payment_method === "online") {
-        // Chuyển hướng người dùng đến Stripe thanh toán
-        const response = await fetch(
-          `${URL}/api/order/add-order`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: token,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(orderData),
-          }
-        );
+        // Chuyển hướng người dùng đến thanh toán
+        const response = await fetch(`${URL}/api/order/add-order`, {
+          method: "POST",
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        });
 
         const result = await response.json();
         if (response.ok) {
+          console.log(result.url);
           window.location.href = result.url; // Chuyển hướng tới trang thanh toán Stripe
         } else {
           throw new Error(result.message || "Lỗi thanh toán");
@@ -131,6 +131,13 @@ const PlaceOrder = () => {
     timePrice = timePrice - (timePrice * discount_code) / 100 + 20;
     setTotalPrice(timePrice);
   }, [location.state, cartItems]);
+
+  //than toan
+  useEffect(() => {
+    if (payment_method !== "online") {
+      setPaymentGateway("");
+    }
+  }, [payment_method]);
 
   console.log(cartItems);
   return (
@@ -258,7 +265,10 @@ const PlaceOrder = () => {
             </div>
             <hr />
           </div>
+          {/* thanh toan */}
           <div className="radio-group">
+            <h4>Chọn phương thức thanh toán</h4>
+
             <label className="custom-radio">
               <input
                 type="radio"
@@ -267,7 +277,7 @@ const PlaceOrder = () => {
                 onChange={() => setPayment_method("cod")}
               />
               <span className="checkmark"></span>
-              Thanh toán khi nhận hàng
+              Thanh toán khi nhận hàng (COD)
             </label>
 
             <label className="custom-radio">
@@ -281,11 +291,48 @@ const PlaceOrder = () => {
               Thanh toán online
             </label>
 
+            {payment_method === "online" && (
+              <div className="online-options">
+                <h5>Chọn cổng thanh toán</h5>
+                <label className="custom-radio">
+                  <input
+                    type="radio"
+                    value="stripe"
+                    checked={paymentGateway === "stripe"}
+                    onChange={() => setPaymentGateway("stripe")}
+                  />
+                  <span className="checkmark"></span>
+                  Stripe
+                </label>
+
+                <label className="custom-radio">
+                  <input
+                    type="radio"
+                    value="vn-pay"
+                    checked={paymentGateway === "vn-pay"}
+                    onChange={() => setPaymentGateway("vn-pay")}
+                  />
+                  <span className="checkmark"></span>
+                  VN-Pay
+                </label>
+                <label className="custom-radio">
+                  <input
+                    type="radio"
+                    value="mo-mo"
+                    checked={paymentGateway === "mo-mo"}
+                    onChange={() => setPaymentGateway("mo-mo")}
+                  />
+                  <span className="checkmark"></span>
+                  MoMo
+                </label>
+              </div>
+            )}
+
             <p>
               Bạn đã chọn:{" "}
               {payment_method === "cod"
                 ? "Thanh toán khi nhận hàng"
-                : "Thanh toán online"}
+                : `Thanh toán online (${paymentGateway || "chưa chọn cổng"})`}
             </p>
           </div>
           <button>Submit</button>

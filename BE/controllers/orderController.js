@@ -1,7 +1,9 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import cartModel from "../models/cartModel.js";
-import createStripe from "../stripe/createStripe.js";
+import createStripe from "../payment/stripe/createStripe.js"
+import createVnPay from "../payment/vnPay/createVnPay.js";
+import createMoMo from "../payment/momo/createMomo.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -38,6 +40,7 @@ const addOrder = async (req, res) => {
       payment_method,
       item,
       total_price,
+      paymentGateway,
     } = req.body;
 
     let payment_id = null;
@@ -63,18 +66,34 @@ const addOrder = async (req, res) => {
       payment_method,
       payment_id,
       order_create,
+      paymentGateway,
     });
 
     await order.save(); // Lưu đơn hàng
 
+    await cartModel.findOneAndDelete({ user_id: req.userId }); // Xóa giỏ hàng sau khi tạo đơn
+
     // Nếu chọn thanh toán online, tạo phiên Stripe
     if (payment_method === "online") {
-      // Dùng Stripe thanh toán thẻ
-      const { url } = await createStripe(item, delivery_fee,discount_code, req.userId, order._id.toString());
-      return res.status(200).json({ url });
-    } 
-
-    await cartModel.findOneAndDelete({ user_id: req.userId }); // Xóa giỏ hàng sau khi tạo đơn
+      if (paymentGateway === "stripe") {
+        // Dùng Stripe thanh toán thẻ
+        const { url } = await createStripe(
+          item,
+          delivery_fee,
+          discount_code,
+          req.userId,
+          order._id.toString()
+        );
+        return res.status(200).json({ url });
+      }else if(paymentGateway === "vn-pay"){
+        const vnpayUrl = await createVnPay(order, req)
+        return res.status(200).json({ url: vnpayUrl });
+      }else if(paymentGateway === "mo-mo"){
+        const moMoURL = await createMoMo(order)
+        console.log(moMoURL);
+        return res.status(200).json({url:moMoURL})
+      }
+    }
     return res
       .status(200)
       .json({ success: true, message: "Order created", order, item });
@@ -216,12 +235,10 @@ const detailOrder = async (req, res) => {
   try {
     const orderId = req.params.id;
     if (!orderId) {
-      return res
-        .status(400)
-        .json({ success: false, message: "no orderId" });
+      return res.status(400).json({ success: false, message: "no orderId" });
     }
     const order = await orderModel
-      .findOne({_id: orderId })
+      .findOne({ _id: orderId })
       .populate("item.foodId")
       .populate("user_id");
     if (!order) {

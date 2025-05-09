@@ -1,6 +1,6 @@
-import orderModel from "../models/orderModel.js";
-import stripe from "../utils/stripeUtils.js";
-import cartModel from "../models/cartModel.js";
+import orderModel from "../../models/orderModel.js";
+import stripe from "../../utils/stripeUtils.js";
+import cartModel from "../../models/cartModel.js";
 
 const endpointsSecret = process.env.STRIPE_WEBHOOK_SECRET;
 

@@ -6,7 +6,7 @@ import FoodItem from "../FoodItem/FoodItem";
 
 const FoodDisplay = ({category, sortBy} ) => {
   const {food_list} = useContext(StoreContext);
-  
+  console.log(food_list);
   let filterFood = food_list.filter(item => category ==="All" || category === item.category)
 
   if (sortBy === "tăng dần") {
