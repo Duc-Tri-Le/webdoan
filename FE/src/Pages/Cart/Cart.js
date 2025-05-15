@@ -76,34 +76,24 @@ const Cart = () => {
         <div className="cart-total">
           <div className="cart-total-total">
             <div className="cart-total-details">
-              <p>Subtotal</p>
+              <p>Giá ban đầu</p>
               <p>{totalPrice}</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Delivery Fee</p>
+              <p>Phí vận chuyển</p>
               <p>20</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Total</p>
+              <p>Tổng giá tiền</p>
               <p>{totalPrice + 20}</p>
             </div>
             <hr />
           </div>
           <button onClick={() => navigate("/place-oder")}>
-            PROCEED TO CHECKOUT
+            Chuyển đến thanh toán
           </button>
-        </div>
-        {/* Code sale */}
-        <div className="cart-promo-code">
-          <div>
-            <p>If you have a promo code, Enter it here</p>
-            <div className="cart-promo-code-input">
-              <input type="text" placeholder="promo code" />
-              <button>Submit</button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

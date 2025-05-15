@@ -1,7 +1,7 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import cartModel from "../models/cartModel.js";
-import createStripe from "../payment/stripe/createStripe.js"
+import createStripe from "../payment/stripe/createStripe.js";
 import createVnPay from "../payment/vnPay/createVnPay.js";
 import createMoMo from "../payment/momo/createMomo.js";
 import dotenv from "dotenv";
@@ -34,7 +34,6 @@ const addOrder = async (req, res) => {
     }
 
     const {
-      discount_code,
       delivery_fee,
       address,
       payment_method,
@@ -57,7 +56,6 @@ const addOrder = async (req, res) => {
     // Lưu đơn hàng vào database
     order = new orderModel({
       user_id: req.userId,
-      discount_code,
       total_price,
       item: items,
       delivery_fee,
@@ -66,13 +64,13 @@ const addOrder = async (req, res) => {
       payment_method,
       payment_id,
       order_create,
-      paymentGateway,
+      payment_gateAway: paymentGateway,
     });
 
     await order.save(); // Lưu đơn hàng
 
     await cartModel.findOneAndDelete({ user_id: req.userId }); // Xóa giỏ hàng sau khi tạo đơn
-
+    // console.log(order._id);
     // Nếu chọn thanh toán online, tạo phiên Stripe
     if (payment_method === "online") {
       if (paymentGateway === "stripe") {
@@ -80,18 +78,18 @@ const addOrder = async (req, res) => {
         const { url } = await createStripe(
           item,
           delivery_fee,
-          discount_code,
+          total_price,
           req.userId,
           order._id.toString()
         );
         return res.status(200).json({ url });
-      }else if(paymentGateway === "vn-pay"){
-        const vnpayUrl = await createVnPay(order, req)
+      } else if (paymentGateway === "vnPay") {
+        const vnpayUrl = await createVnPay(order, req);
         return res.status(200).json({ url: vnpayUrl });
-      }else if(paymentGateway === "mo-mo"){
-        const moMoURL = await createMoMo(order)
-        console.log(moMoURL);
-        return res.status(200).json({url:moMoURL})
+      } else if (paymentGateway === "MoMo") {
+        const moMoURL = await createMoMo(order);
+        // console.log(moMoURL);
+        return res.status(200).json({ url: moMoURL });
       }
     }
     return res
@@ -139,13 +137,7 @@ const getListAdminOrder = async (req, res) => {
     const adminOrders = await orderModel
       .find({})
       .populate("item.foodId", "name price image");
-
-    // Kiểm tra nếu không có đơn hàng
-    if (!adminOrders.length) {
-      return res
-        .status(404)
-        .json({ success: false, message: "No orders found" });
-    }
+   
     res.status(200).json({ success: true, data: adminOrders });
   } catch (error) {
     res.status(500).json({ success: false, error: error });

@@ -38,7 +38,7 @@ const OrderComplete = ({ orderData }) => {
     },
   ];
   console.log(orderData);
-  console.log(orderData.address);
+  // console.log(orderData.address);
   return (
     <div>
       <section>
@@ -95,7 +95,6 @@ const OrderComplete = ({ orderData }) => {
           <div className="bill-under">
             <span>Tổng tiền: {orderData?.total_price || 0} VND</span>
             <span>Phí giao hàng: {orderData?.delivery_fee || 0} VND</span>
-            <span>Mã giảm giá: {orderData?.discount_code || "Không có"}%</span>
             <span>Phương thức thanh toán: {orderData?.payment_method}</span>
           </div>
         </div>

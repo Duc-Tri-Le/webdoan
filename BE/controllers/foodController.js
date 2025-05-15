@@ -234,6 +234,24 @@ const removeReview = async (req, res) => {
   }
 };
 
+const recommendationFood= async(req, res) => {
+  try {
+    const {product} = req.body;
+    for (const food of product) {
+       await foodModel.findByIdAndUpdate(
+        food._id,
+        { isRecommended: food.isRecommended },
+        { new: true }
+      );
+    }
+    console.log(product);
+    res.status(200).json({ message: 'Updated recommended foods successfully!' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error:error });
+  }
+}
+
 export {
   addFood,
   list_food,
@@ -242,4 +260,5 @@ export {
   detail_food,
   search_food,
   addReview,
+  recommendationFood
 };

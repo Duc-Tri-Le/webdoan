@@ -83,6 +83,17 @@ const StoreContextProvider = ({ children }) => {
     loadData()
   },[])
 
+  const updateRecommendation = async (product) =>{
+    const response = await fetch(`${URL}/api/food/recommendation`,{
+      method:"POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body:JSON.stringify({product})
+    })
+  }
+
   // const cancelOrder = async (orderId) => {
   //   try {
   //     const cancel = await fetch(`${URL}/api/order/remove-order/${orderId}`, {
@@ -111,6 +122,7 @@ const StoreContextProvider = ({ children }) => {
     token,
     setToken,
     list,
+    updateRecommendation,
   };
 
   return (

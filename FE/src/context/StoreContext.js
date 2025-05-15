@@ -136,6 +136,17 @@ const StoreContextProvider = (props) => {
     } catch (error) {}
   };
 
+  const getAllListVoucher = async () => {
+    const response = await fetch(`${URL}/api/voucher/allListVoucher`,{
+      method:"GET",
+      headers:{
+        Authorization:token,
+        "Content-Type":"application/json",
+      },
+    });
+    return await response.json()
+  };
+
   const contextValue = {
     food_list,
     cartItems,
@@ -148,6 +159,7 @@ const StoreContextProvider = (props) => {
     getListCart,
     getUSerIf,
     dataUSer,
+    getAllListVoucher,
   };
 
   return (

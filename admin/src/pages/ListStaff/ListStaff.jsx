@@ -28,9 +28,9 @@ const ListStaff = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
+    if (token) {
       getListStaff();
-    }, 200);
+    }
   }, [token]);
 
   const handleClick = async () => {

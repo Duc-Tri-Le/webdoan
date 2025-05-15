@@ -29,9 +29,8 @@ const orderSchema = new mongoose.Schema({
       date: { type: Date, default: Date.now },
     },
   ],
-  discount_code: { type: Number, default: 0 },
-  total_price: { type: Number, default: 0 },
   delivery_fee: { type: Number, required: true },
+  total_price: { type: Number, required: true },
   address: {
     first_name: String,
     last_name: String,
@@ -54,7 +53,7 @@ const orderSchema = new mongoose.Schema({
     default: "food processing",
   },
   payment_status: { type: Boolean, default: false },
-  payment_id: { type: String },
+  payment_gateAway: { type: String, enum :["MoMo", "vnPay", "stripe", ""] },
   payment_method: { type: String, enum: ["cod", "online"], required: true },
   order_create: { type: String, default: null },
   order_on_delivery: { type: String, default: null },
@@ -63,8 +62,7 @@ const orderSchema = new mongoose.Schema({
   order_return: { type: String, default: null },
   order_reviewed: { type: String, default: null },
   order_receive: { type: String, default: null },
-  typePayment: { type: String, default: null },
-  paymentGateway : {type: String, default:null}
+  typePayment: { type: String, default: "card" },
 });
 
 const orderModel =

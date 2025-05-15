@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route, useLocation} from "react-router-dom";
 import DefaultLayout from "./components/Layout/DefaultLayout";
 import { publicRoutes } from "./Routes";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 function ScrollToSection(){
   const {hash} = useLocation();

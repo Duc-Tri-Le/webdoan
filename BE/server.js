@@ -5,7 +5,8 @@ import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRouter.js";
 import orderRouter from "./routes/orderRouter.js";
-import handelWebHook from "./payment/stripe/webhook.js"
+import handelWebHook from "./payment/stripe/webhook.js";
+import handelWebHookMoMo from "./payment/momo/webhookMomo.js";
 import bodyParser from "body-parser";
 import dotenv from "dotenv"
 //app
@@ -13,13 +14,12 @@ import dotenv from "dotenv"
 const app = express();
 const port = 4000;
 //webhook
-//api webhook
+//api webhook cho stripe
 app.post(
-  "/api/webhook",
+  "/api/webhookStripe",
   bodyParser.raw({ type: "application/json" }),
   handelWebHook
 );
-
 
 //middleware
 app.use(express.json());
@@ -37,6 +37,8 @@ app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
+//api webhook momo
+app.post("/api/webhookMoMo", handelWebHookMoMo);
 
 app.get("/", (req, res) => {
   res.send("APT Working");

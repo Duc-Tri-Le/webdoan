@@ -10,7 +10,8 @@ import DetailOrder from "../pages/DetailOrder/DetailOrder.jsx";
 import ShippedManagement from "../pages/ShippedManagement/ShippedManagement.jsx";
 import CreateStaff from "../pages/CreateStaff/CreateStaff.jsx";
 import GrantRole from "../pages/GrantRole/GrantRole.jsx";
-import ListStaff from "../pages/listStaff/ListStaff.jsx";
+import ListStaff from "../pages/ListStaff/ListStaff.jsx";
+import ProductRecommendation from "../pages/ProductRecommendation/ProductRecommendation.jsx";
 
 const ConfigRoutes = {
   add: "/",
@@ -26,6 +27,7 @@ const ConfigRoutes = {
   create_staff: "/create_staff",
   list_staff: "/list_staff",
   grant_role_staff: "/grant_role_staff",
+  product_recommendation: "/product_recommendation",
 };
 
 const PrivateRouter = [
@@ -42,6 +44,7 @@ const PrivateRouter = [
   { path: ConfigRoutes.create_staff, component: CreateStaff },
   { path: ConfigRoutes.grant_role_staff, component: GrantRole },
   { path: ConfigRoutes.list_staff, component: ListStaff },
+  { path: ConfigRoutes.product_recommendation, component: ProductRecommendation },
 ];
 
 export { PrivateRouter, ConfigRoutes };

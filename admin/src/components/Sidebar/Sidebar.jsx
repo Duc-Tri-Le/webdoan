@@ -26,6 +26,7 @@ export default function Sidebar() {
     { to: ConfigRoutes.return_management, imgSrc: assets.order, text: "Return Management" },
     { to: ConfigRoutes.list_staff, imgSrc: assets.order, text: "List Staff" },
     { to: ConfigRoutes.sales_statistics, imgSrc: assets.order, text: "Sales Statistics" },
+    { to: ConfigRoutes.product_recommendation, imgSrc: assets.order, text: "Product Recommendation" },
   ];
 
   return (

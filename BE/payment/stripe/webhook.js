@@ -1,6 +1,5 @@
 import orderModel from "../../models/orderModel.js";
 import stripe from "../../utils/stripeUtils.js";
-import cartModel from "../../models/cartModel.js";
 
 const endpointsSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -27,15 +26,7 @@ const handelWebHook = async (req, res) => {
     try {
       await orderModel.findByIdAndUpdate(orderId, {
         payment_status: true,
-        payment_method: "online",
-        payment_id: session.id,
-      });
-
-      // Xoá giỏ hàng sau khi thanh toán
-      if (userId) {
-        await cartModel.findOneAndDelete({ user_id: userId });
-      }
-
+      },{ new: true });
       console.log("Cập nhật đơn hàng thành công:", orderId);
     } catch (err) {
       console.error("Lỗi khi cập nhật đơn hàng:", err.message);
@@ -52,7 +43,6 @@ const handelWebHook = async (req, res) => {
 
     if (orderId) {
       try {
-        await orderModel.findByIdAndDelete(orderId);
         console.log(
           "Đã xoá đơn hàng tạm thời do thanh toán thất bại:",
           orderId

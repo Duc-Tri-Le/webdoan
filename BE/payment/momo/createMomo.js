@@ -8,7 +8,7 @@ const createMoMo = async (order) => {
   const orderId = order._id;
   const orderInfo = "pay with MoMo";
   const redirectUrl = `${process.env.FRONTEND_URL}/complete-payment?orderId=${orderId}`;
-  const ipnUrl = "https://ductri.loca.lt";
+  const ipnUrl = "https://6a85-2405-4802-17a6-dd60-857a-7160-7dd2-ab3f.ngrok-free.app/api/webhookMoMo";
   const extraData = "";
   const requestType = "payWithATM";
   const amount = Math.round(order.total_price).toString();
@@ -58,7 +58,7 @@ const createMoMo = async (order) => {
 
   const result = await response.json();
 
-  console.log("MoMo response:", result);
+  // console.log("MoMo response:", result);
 //   console.log(result.errorCode);
 //   console.log(result.payUrl);
 

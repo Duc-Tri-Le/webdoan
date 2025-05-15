@@ -8,7 +8,6 @@ const PlaceOrder = () => {
   const location = useLocation();
   const orderBuyAgain = location.state?.order || [];
   const navigate = useNavigate();
-  const discount_code = 20;
   const [orderItems, setOrderItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [payment_method, setPayment_method] = useState("cod");
@@ -54,7 +53,6 @@ const PlaceOrder = () => {
       item: orderItems,
       total_price: totalPrice,
       delivery_fee: 20,
-      discount_code: discount_code,
       payment_method,
       paymentGateway,
     };
@@ -93,9 +91,10 @@ const PlaceOrder = () => {
         if (!response.ok) {
           throw new Error(result.message || "Đặt hàng thất bại");
         }
+        console.log(result);
 
         alert("Đặt hàng thành công!");
-        navigate("/bill", { state: orderData });
+        navigate("/bill", { state: result.order });
       }
     } catch (error) {
       console.log(`Lỗi: ${error.message}`);
@@ -108,12 +107,12 @@ const PlaceOrder = () => {
       const updatedItems = orderBuyAgain.item
         .map((item) => {
           if (item.quantity > 0) {
-            timePrice += item.foodId.price * item.quantity;
             return { ...item.foodId, quantity: item.quantity };
           }
           return null;
         })
-        .filter((item) => item !== null); // Lọc các giá trị nul
+        .filter((item) => item !== null); 
+        timePrice = orderBuyAgain.total_price
       setOrderItems(updatedItems);
     } else {
       const updatedItems = (cartItems || [])
@@ -128,7 +127,7 @@ const PlaceOrder = () => {
 
       setOrderItems(updatedItems);
     }
-    timePrice = timePrice - (timePrice * discount_code) / 100 + 20;
+    timePrice = timePrice + 20;
     setTotalPrice(timePrice);
   }, [location.state, cartItems]);
 
@@ -139,7 +138,7 @@ const PlaceOrder = () => {
     }
   }, [payment_method]);
 
-  console.log(cartItems);
+  console.log(orderBuyAgain);
   return (
     <form className="place-order" onSubmit={placeOrder}>
       {/* left */}
@@ -255,12 +254,12 @@ const PlaceOrder = () => {
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Delivery Fee</p>
+              <p>Phí vận chuyển</p>
               <p>20</p>
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Total</p>
+              <p>Tổng giá trị</p>
               <p>{totalPrice}</p>
             </div>
             <hr />
@@ -308,19 +307,19 @@ const PlaceOrder = () => {
                 <label className="custom-radio">
                   <input
                     type="radio"
-                    value="vn-pay"
-                    checked={paymentGateway === "vn-pay"}
-                    onChange={() => setPaymentGateway("vn-pay")}
+                    value="vnPay"
+                    checked={paymentGateway === "vnPay"}
+                    onChange={() => setPaymentGateway("vnPay")}
                   />
                   <span className="checkmark"></span>
-                  VN-Pay
+                  VnPay
                 </label>
                 <label className="custom-radio">
                   <input
                     type="radio"
-                    value="mo-mo"
-                    checked={paymentGateway === "mo-mo"}
-                    onChange={() => setPaymentGateway("mo-mo")}
+                    value="MoMo"
+                    checked={paymentGateway === "MoMo"}
+                    onChange={() => setPaymentGateway("MoMo")}
                   />
                   <span className="checkmark"></span>
                   MoMo

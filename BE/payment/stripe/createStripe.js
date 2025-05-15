@@ -1,11 +1,11 @@
 import stripe from "../../utils/stripeUtils.js";
 
-const createStripe = async (item, delivery_fee, discount_code, userId, orderId) => {
+const createStripe = async (item, delivery_fee, total_price, userId, orderId) => {
   const line_items = item.map((item) => ({
     price_data: {
       currency: "vnd",
       product_data: { name: item.name },
-      unit_amount: Math.round(item.price * (1 - discount_code / 100)) * 1000,
+      unit_amount: Math.round(total_price) * 1000,
     },
     quantity: item.quantity,
   }));
