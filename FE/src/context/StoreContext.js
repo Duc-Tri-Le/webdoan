@@ -6,6 +6,7 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
   const [token, setToken] = useState("");
+  const [userId, setUserId] = useState("")
   const [food_list, setFoodList] = useState([]);
   const URL = "http://localhost:4000";
   const [dataUSer, setDataUser] = useState({})
@@ -46,9 +47,11 @@ const StoreContextProvider = (props) => {
       try {
         await getListFood();
         const storedToken = localStorage.getItem("token");
+        const getUserId = localStorage.getItem("userId");
         // console.log(storedToken);
         if (storedToken) {
           setToken(storedToken);
+          setUserId(getUserId)
         }
       } catch (error) {
         console.error("Error loading data:", error);
@@ -147,6 +150,23 @@ const StoreContextProvider = (props) => {
     return await response.json()
   };
 
+  const getAdmin = async () => {
+    try {
+      const adminIf = await fetch(`${URL}/api/user/getAdmin`,{
+        method:"GET",
+        headers:{
+          Authorization:token,
+          "Content-Type":"application/json",
+        },
+      })
+      const admin = await adminIf.json();
+      const adminId = admin._id
+      return adminId;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const contextValue = {
     food_list,
     cartItems,
@@ -160,6 +180,9 @@ const StoreContextProvider = (props) => {
     getUSerIf,
     dataUSer,
     getAllListVoucher,
+    getAdmin,
+    userId,
+    setUserId,
   };
 
   return (

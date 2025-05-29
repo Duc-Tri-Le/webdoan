@@ -12,6 +12,7 @@ import CreateStaff from "../pages/CreateStaff/CreateStaff.jsx";
 import GrantRole from "../pages/GrantRole/GrantRole.jsx";
 import ListStaff from "../pages/ListStaff/ListStaff.jsx";
 import ProductRecommendation from "../pages/ProductRecommendation/ProductRecommendation.jsx";
+import ChatBox from "../components/ChatBox/ChatBox.jsx";
 
 const ConfigRoutes = {
   add: "/",
@@ -28,6 +29,7 @@ const ConfigRoutes = {
   list_staff: "/list_staff",
   grant_role_staff: "/grant_role_staff",
   product_recommendation: "/product_recommendation",
+  chatBox: "/chatBox",
 };
 
 const PrivateRouter = [
@@ -44,7 +46,11 @@ const PrivateRouter = [
   { path: ConfigRoutes.create_staff, component: CreateStaff },
   { path: ConfigRoutes.grant_role_staff, component: GrantRole },
   { path: ConfigRoutes.list_staff, component: ListStaff },
-  { path: ConfigRoutes.product_recommendation, component: ProductRecommendation },
+  {
+    path: ConfigRoutes.product_recommendation,
+    component: ProductRecommendation,
+  },
+  { path: ConfigRoutes.chatBox, component: ChatBox },
 ];
 
 export { PrivateRouter, ConfigRoutes };

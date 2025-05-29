@@ -53,4 +53,5 @@
     flex: 1;
     padding: 20px;
     background-color: #fff;
+    height: calc(100vh - 60px);
 }

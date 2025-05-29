@@ -4,6 +4,7 @@ import TypicalDish from "../../components/Typical_dish/typicalDish";
 import ExploreMenu from "../../components/ExploreMenu/exploreMenu";
 import FoodDisplay from "../../components/FoodDisplay/FoodDisplay";
 import SortBy from "../../components/SortBY/SortBy";
+import ChatBox from "../../components/ChatBox/ChatBox";
 import { StoreContext } from "../../context/StoreContext";
 
 const Home = () => {

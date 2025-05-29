@@ -8,7 +8,7 @@ const Registration = ({ setShowRegistration, setShowLogin }) => {
     email: "",
     password: "",
   });
-  const {setToken} = useContext(StoreContext)
+  const {setToken, setUserId} = useContext(StoreContext)
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleOnChange = (event) => {
@@ -42,11 +42,14 @@ const Registration = ({ setShowRegistration, setShowLogin }) => {
         setToken(result.data.token)
         localStorage.setItem("token", result.data.token);
 
-        // Cập nhật giao diện: ẩn form đăng ký, chuyển sang trang chính
+        //luu userId vao localStorage
+        setUserId(result.data.id)
+        localStorage.setItem("userId", result.data.id)
+        
         setShowRegistration(false);
-        setShowLogin(false); // Ẩn form login (nếu có)
+        setShowLogin(false); 
       } else {
-        alert(result.message); // Hiển thị lỗi nếu có
+        alert(result.message); 
       }
     } catch (error) {
       console.error("Lỗi đăng ký:", error);

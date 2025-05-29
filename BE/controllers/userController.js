@@ -18,7 +18,6 @@ const loginUSer = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Tìm người dùng trong database
     const user = await userModel.findOne({ email }).select("+password");
     if (!user) {
       return res
@@ -26,13 +25,11 @@ const loginUSer = async (req, res) => {
         .json({ success: false, message: "Tài khoản không tồn tại!" });
     }
 
-    // So sánh mật khẩu
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ success: false, message: "Sai mật khẩu!" });
     }
 
-    // Tạo token đăng nhập
     const token = createToken(user._id, user.role);
 
     // Loại bỏ mật khẩu khỏi dữ liệu trả về
@@ -55,7 +52,6 @@ const registerUSer = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Kiểm tra xem email đã tồn tại chưa
     const exist = await userModel.findOne({ email });
     if (exist) {
       return res
@@ -63,35 +59,29 @@ const registerUSer = async (req, res) => {
         .json({ success: false, message: "Email đã tồn tại!" });
     }
 
-    // Kiểm tra email hợp lệ
     if (!validator.isEmail(email)) {
       return res
         .status(400)
         .json({ success: false, message: "Email không hợp lệ!" });
     }
 
-    // Kiểm tra độ dài mật khẩu
     if (password.length < 8) {
       return res
         .status(400)
         .json({ success: false, message: "Mật khẩu phải có ít nhất 8 ký tự!" });
     }
 
-    // Mã hóa mật khẩu
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Tạo user mới
     const user = new userModel({
       name,
       email,
       password: hashedPassword,
     });
 
-    // Lưu user vào database
     await user.save();
 
-    // Tạo token
     const token = createToken(user._id, user.role);
 
     res.status(201).json({
@@ -267,6 +257,25 @@ const getListStaff = async (req, res) => {
   }
 };
 
+const getAdmin = async (req, res) => {
+  try {
+    const admin = await userModel.findOne({role:"admin"})
+    if(!admin){
+      return res.status(404).json({message:"no found"})
+    }
+    return res.status(200).json(admin)
+  } catch (error) {
+    return res.status(500).json({message:"error", error:error})
+  }
+}
+const getAllUser = async(req, res) => {
+  try {
+    const listUser = await userModel.find({});
+    return res.status(200).json({message:"lay thanh cong", data:listUser})
+  } catch (error) {
+    return res.status(500).json({error:error})
+  }
+}
 
 
 export {
@@ -278,4 +287,6 @@ export {
   grantRole,
   createStaff,
   getListStaff,
+  getAdmin,
+  getAllUser,
 };

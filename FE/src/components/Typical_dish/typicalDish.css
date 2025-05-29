@@ -1,12 +1,10 @@
 .typical_dish {
     height: 34vw;
     margin: 30px auto;
-
     background-size: cover;
     position: relative;
     width: 100%;
 }
-
 
 .dish_slider {
     margin-top: 40px;
@@ -20,13 +18,17 @@
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin: 0 10px;
+    transition: all 0.3s ease;
+    transform: scale(0.9);
+    opacity: 0.6;
 }
 
-.dish_card.single {
-    margin: 0 auto;
-    max-width: 300px;
+.slick-center .dish_card {
+    transform: scale(1.05);
+    opacity: 1;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 2;
 }
-
 
 .dish_image {
     width: 100%;
@@ -48,6 +50,26 @@
     margin-top: 4px;
 }
 
+/* Dấu chấm tròn */
+.slick-dots {
+    bottom: -30px;
+    text-align: center;
+}
+
+.slick-dots li {
+    display: inline-block;
+    margin: 0 6px;
+}
+
+.slick-dots li button {
+    font-size: 0;
+    width: 12px;
+    height: 12px;
+    background: #ccc;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
 
 .slick-prev:before,
 .slick-next:before {
@@ -55,6 +77,7 @@
     font-size: 24px;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
     .dish_card {
         padding: 12px;
@@ -73,7 +96,7 @@
     }
 }
 
-@media (max-width:1050px) {
+@media (max-width: 1050px) {
     .typical_dish {
         height: 38vw;
     }
@@ -83,7 +106,7 @@
     }
 }
 
-@media (max-width:750px) {
+@media (max-width: 750px) {
     .ty_container {
         max-width: 65%;
     }

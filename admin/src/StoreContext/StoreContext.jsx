@@ -9,6 +9,7 @@ const StoreContextProvider = ({ children }) => {
   const URL = "http://localhost:4000";
   const [list, setList] = useState([]);
   const [token, setToken] = useState("")
+  const [userId, setUserId] = useState("")
 
   useEffect(() => {
     const getListOrder = async () => {
@@ -71,11 +72,13 @@ const StoreContextProvider = ({ children }) => {
   useEffect(()=>{
     const loadData = async () => {
       try {
+        await getList();
         const storedToken = localStorage.getItem("token")
+        const userId = localStorage.getItem("userId")
         if (storedToken) {
           setToken(storedToken);
+          setUserId(userId)
         }
-        await getList();
       } catch (error) {
         console.error("Error loading data:", error);
       }
@@ -93,6 +96,22 @@ const StoreContextProvider = ({ children }) => {
       body:JSON.stringify({product})
     })
   }
+
+  const getAllUser = async (token) => {
+    try {
+      const responsive = await fetch(`${URL}/api/user/listUser`,{
+        method:"GET",
+        headers:{
+          Authorization:token,
+          "Content-Type":"application/json",
+        },
+      })
+      const listUser = await responsive.json();
+      return listUser.data
+    } catch (error) {
+      console.log(error);
+    }
+}
 
   // const cancelOrder = async (orderId) => {
   //   try {
@@ -123,6 +142,9 @@ const StoreContextProvider = ({ children }) => {
     setToken,
     list,
     updateRecommendation,
+    userId,
+    setUserId,
+    getAllUser,
   };
 
   return (

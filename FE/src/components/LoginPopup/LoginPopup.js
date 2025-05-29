@@ -4,15 +4,15 @@ import Registration from "../Registration/Registration";
 import { StoreContext } from "../../context/StoreContext";
 
 const LoginPopup = ({ setShowLogin }) => {
-  const URL = "http://localhost:4000/api/user/login"; // Đảm bảo API đúng
+  const URL = "http://localhost:4000/api/user/login"; 
   const [showRegistration, setShowRegistration] = useState(false);
-  const {setToken} = useContext(StoreContext)
+  const {setToken, setUserId} = useContext(StoreContext)
 
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState(""); // Thêm state để lưu lỗi
+  const [errorMessage, setErrorMessage] = useState(""); 
 
   const handleOnchange = (event) => {
     const { name, value } = event.target;
@@ -21,13 +21,13 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Xóa lỗi cũ trước khi đăng nhập
+    setErrorMessage(""); 
 
     try {
       const response = await fetch(URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data), // Chuyển object thành JSON
+        body: JSON.stringify(data), 
       });
 
       if (!response.ok) {
@@ -39,10 +39,13 @@ const LoginPopup = ({ setShowLogin }) => {
       if (res.success) {
         console.log("Login successful:", res.data);
         setToken(res.data.token)
-        localStorage.setItem("token", res.data.token); // Lưu token vào localStorage
+        localStorage.setItem("token", res.data.token); 
+        //luu userId vao localStorage
+        setUserId(res.data.user._id)
+        localStorage.setItem("userId", res.data.user._id)
         setShowLogin(false);
       } else {
-        setErrorMessage(res.message || "Login failed!"); // Hiển thị lỗi từ server
+        setErrorMessage(res.message || "Login failed!"); 
       }
     } catch (error) {
       console.error("Error:", error);
@@ -63,7 +66,7 @@ const LoginPopup = ({ setShowLogin }) => {
             <h2 className="title">Login</h2>
           </div>
 
-          {errorMessage && <p className="error">{errorMessage}</p>} {/* Hiển thị lỗi */}
+          {errorMessage && <p className="error">{errorMessage}</p>} 
 
           <div className="login_popup_input">
             <input

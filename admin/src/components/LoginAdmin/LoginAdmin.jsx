@@ -5,7 +5,7 @@ import { StoreContext } from "../../StoreContext/StoreContext";
 const LoginAdmin = ({ setShowLogin }) => {
   const [errorMessage, setErrorMessage] = useState(""); 
   const URL = "http://localhost:4000/api/user/login/staff";
-  const { setToken } = useContext(StoreContext); 
+  const { setToken, setUserId } = useContext(StoreContext); 
 
   // Dữ liệu form
   const [data, setData] = useState({
@@ -49,12 +49,14 @@ const LoginAdmin = ({ setShowLogin }) => {
       }
 
       if (res.success) {
-        setToken(res.data.token); // Lưu token vào Context
-        localStorage.setItem("token", res.data.token); // Lưu token vào LocalStorage
-        setShowLogin(false); // Đóng form đăng nhập
+        setToken(res.data.token); 
+        setUserId(res.data.staff._id)
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("userId", res.data.staff._id)
+        setShowLogin(false); 
       }
     } catch (error) {
-      setErrorMessage(error.message); // Hiển thị lỗi lên UI
+      setErrorMessage(error.message); 
     }
   };
 

@@ -1,0 +1,145 @@
+.message-input-container {
+    padding: 12px;
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid #e5e7eb;
+}
+
+.message-preview {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.preview-image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #1f2937;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.remove-image-btn:hover {
+    background-color: #374151;
+}
+
+.message-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.message-text-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.message-text-input:focus {
+    border-color: #3b82f6;
+}
+
+.file-input {
+    display: none;
+}
+
+.message-action-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.message-action-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.message-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.image-btn {
+    color: #3b82f6;
+}
+
+.image-btn:hover {
+    color: #2563eb;
+}
+
+.send-btn {
+    color: #3b82f6;
+}
+
+.send-btn:hover {
+    color: #2563eb;
+}
+
+.send-btn:disabled {
+    color: #9ca3af;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    .message-input-container {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+
+    .message-text-input {
+        background-color: #374151;
+        border-color: #4b5563;
+        color: white;
+    }
+
+    .message-text-input:focus {
+        border-color: #60a5fa;
+    }
+
+    .message-action-btn:hover {
+        background-color: #374151;
+    }
+
+    .preview-image {
+        border-color: #4b5563;
+    }
+
+    .remove-image-btn {
+        background-color: #4b5563;
+    }
+
+    .remove-image-btn:hover {
+        background-color: #6b7280;
+    }
+}
