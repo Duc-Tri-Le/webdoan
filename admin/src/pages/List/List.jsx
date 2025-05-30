@@ -10,7 +10,7 @@ const List = () => {
   const URL = "http://localhost:4000";
   const { token, list } = useContext(StoreContext);
   const [searchResult, setSearchResult] = useState([]);
-
+  
   return (
     <div className="list-container">
       <div className="list-search">
@@ -50,7 +50,7 @@ const List = () => {
                     <td>
                       <span
                         className="remove-btn"
-                        onClick={() => RemoveItem(item._id, getList, token)}
+                        onClick={() => RemoveItem(item._id, token)}
                       >
                         <img src={assets.remove} alt="" />
                       </span>
@@ -58,7 +58,7 @@ const List = () => {
                     <Link to={`/update/${item._id}`} state={{ food: item }}>
                       <span className="update-btn">...</span>
                     </Link>
-                    <td>{new Date(item.updatedAt).toLocaleString()}</td>
+                    <td>{item.updated_at ? new Date(item.updated_at).toLocaleString() : new Date(item.created_at).toLocaleString()}</td>
                   </tr>
                 );
               })
@@ -81,7 +81,7 @@ const List = () => {
                     <td>
                       <span
                         className="remove-btn"
-                        onClick={() => RemoveItem(item._id, getList, token)}
+                        onClick={() => RemoveItem(item._id , token)}
                       >
                         <img src={assets.remove} alt="" />
                       </span>
@@ -89,7 +89,7 @@ const List = () => {
                     <Link to={`/update/${item._id}`} state={{ food: item }}>
                       <span className="update-btn">...</span>
                     </Link>
-                    <td>{new Date(item.updatedAt).toLocaleString()}</td>
+                    <td>{item.updated_at ? new Date(item.updated_at).toLocaleString() : new Date(item.created_at).toLocaleString()}</td>
                   </tr>
                 );
               })

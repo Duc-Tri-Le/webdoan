@@ -141,10 +141,11 @@ const Add = () => {
         <div className="select-category">
           <p>Product category</p>
           <select name="category" value={data.category} onChange={onchangeInfo}>
-            <option value="salad">Salad</option>
-            <option value="drink">Drink</option>
-            <option value="chicken">Chicken</option>
-            <option value="duck">Duck</option>
+            <option>Chọn loại</option>
+            <option value="beverage">đồ uống</option>
+            <option value="combo">combo</option>
+            <option value="food">đồ ăn</option>
+            <option value="dessert">tráng miệng</option>
           </select>
         </div>
 

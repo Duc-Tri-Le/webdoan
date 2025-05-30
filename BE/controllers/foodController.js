@@ -18,6 +18,7 @@ const addFood = async (req, res) => {
       price,
       category,
       image: image_URL,
+      created_at : new Date(),
     });
 
     await food.save();
@@ -124,6 +125,7 @@ const update_food = async (req, res) => {
     food.description = description;
     food.category = category;
     food.image = image_URL;
+    food.update_at= new Date();
 
     await food.save();
     res
