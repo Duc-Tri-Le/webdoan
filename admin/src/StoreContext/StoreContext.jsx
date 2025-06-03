@@ -22,7 +22,8 @@ const StoreContextProvider = ({ children }) => {
           throw new Error(`Error ${orderData.status}: ${orderData.statusText}`);
         }
         const listOrder = await orderData.json();
-        setAllOrder(listOrder.data);
+        const listOrderSort = listOrder.data.sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+        setAllOrder(listOrderSort);
       } catch (error) {
         console.error("Failed to fetch orders:", error.message);
         alert("Có lỗi xảy ra khi tải đơn hàng! Vui lòng thử lại.");

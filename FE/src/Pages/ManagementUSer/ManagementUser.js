@@ -33,8 +33,8 @@ const ManagementUser = () => {
   };
 
   return (
-    <div className="wrapper">
-      <div className="sidebar">
+    <div className="wrapper-managementUser">
+      <div className="sidebar-managementUser">
         {/* <div className="notification" onClick={() => setShowOrder(false)}>Notification</div> */}
         <div className="profile" onClick={handleAccount}>
           <span>My account</span>

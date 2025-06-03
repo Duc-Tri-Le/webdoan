@@ -72,7 +72,7 @@ const PlaceOrder = () => {
         const result = await response.json();
         if (response.ok) {
           console.log(result.url);
-          window.location.href = result.url; // Chuyển hướng tới trang thanh toán Stripe
+          window.location.href = result.url; 
         } else {
           throw new Error(result.message || "Lỗi thanh toán");
         }
@@ -94,7 +94,7 @@ const PlaceOrder = () => {
         console.log(result);
 
         alert("Đặt hàng thành công!");
-        navigate("/bill", { state: result.order });
+        navigate("/bill", { state: result.ordered });
       }
     } catch (error) {
       console.log(`Lỗi: ${error.message}`);

@@ -5,20 +5,19 @@ import Management_Order from "../../components/Management_Order/Management_Order
 
 const DeliveryManagement = () => {
   const {  allOrder } = useContext(StoreContext);
-
+  const listStateOrder = allOrder.filter((item) => item.state === "on delivery")
   return (
     <div className="order-management-wrapper">
       <div className="order-management-container">
-        {allOrder
-          .filter((item) => item.state === "on delivery")
+        {listStateOrder.length > 0 ? (listStateOrder
           .map((item) => {
             return (
-              <Management_Order item={item}/>
+              <Management_Order item = {item}/>
             );
-          })}
+          })):<>Không có sản phẩm nào</>}
       </div>
     </div>
-  );
+  )
 };
 
 export default DeliveryManagement;

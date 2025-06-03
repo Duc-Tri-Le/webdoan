@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { StoreContext } from "../../context/StoreContext";
+import "./ManagementUserIf.css"
 
 const ManagementUserIf = ({ showUSer, setShowUser }) => {
 

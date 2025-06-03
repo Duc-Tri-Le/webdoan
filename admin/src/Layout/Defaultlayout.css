@@ -1,57 +1,31 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .header {
-    width: 100%;
     height: 60px;
-    /* Độ cao của header */
-    background-color: #ffffff;
-    /* Màu trắng */
-    color: #333;
-    /* Màu chữ tối hơn để dễ đọc */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /* Đổ bóng nhẹ */
-    border-bottom: 1px solid #ddd;
-    /* Viền dưới nhẹ */
+    flex-shrink: 0;
 }
-
 
 .container {
     display: flex;
     flex: 1;
+    overflow: hidden;
 }
 
 .sidebar {
     width: 250px;
-    height: calc(100vh - 60px);
-    background-color: #f8f9fa;
-    border-right: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    padding-top: 20px;
-    left: 0;
-    top: 60px;
-    transition: all 0.3s ease-in-out;
+    flex-shrink: 0;
     overflow-y: auto;
+    background-color: #f0f0f0;
 }
 
 .content {
     flex: 1;
-    padding: 20px;
-    background-color: #fff;
-    height: calc(100vh - 60px);
+    overflow-y: auto;
+    padding: 16px;
+    box-sizing: border-box;
 }

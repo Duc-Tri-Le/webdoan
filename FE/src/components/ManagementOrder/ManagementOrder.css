@@ -1,0 +1,196 @@
+.user-content-order {
+    background-color: #fff;
+    padding: 20px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+    max-height: 80vh;
+    overflow-y: auto;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Thanh lọc trạng thái đơn hàng */
+.order-state {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.order-state span {
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #eee;
+    color: #444;
+    font-weight: 600;
+    user-select: none;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+}
+
+.order-state span.active,
+.order-state span:hover {
+    background-color: #3498db;
+    color: white;
+    box-shadow: 0 2px 8px rgb(52 152 219 / 0.5);
+}
+
+/* Khung mỗi đơn hàng */
+.overview-order {
+    border: 1px solid #ddd;
+    padding: 16px 18px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    background-color: #fafafa;
+    box-shadow: inset 0 0 8px rgb(0 0 0 / 0.03);
+}
+
+/* Trạng thái đơn hàng + mã vận đơn */
+.overview-order-state {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 12px;
+    background-color: #2980b9;
+    color: white;
+    font-weight: 700;
+    text-transform: capitalize;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.overview-order-stacking_id {
+    margin-left: 12px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* Thông tin món trong đơn hàng */
+.overview-order-inf {
+    margin-top: 12px;
+    border-top: 1px solid #ddd;
+    padding-top: 12px;
+    cursor: pointer;
+}
+
+.overview-order-inf-food {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.overview-order-inf-food-image img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 0 4px rgb(0 0 0 / 0.1);
+}
+
+.overview-order-inf-food-name {
+    flex: 1;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.overview-order-inf-food-quantity,
+.overview-order-inf-food-price {
+    width: 60px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Tổng tiền đơn hàng */
+.overview-order-foot {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    text-align: right;
+    color: #2c3e50;
+}
+
+.button-all {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.button-overview {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.button-overview button {
+    background-color: #3498db;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+}
+
+.button-overview button:hover {
+    background-color: #2980b9;
+}
+
+.cancel-order,
+.return-order,
+.buy-again {
+  width: 100%;
+  max-width: 150px; 
+}
+/* Các nút đặc biệt */
+.button-overview .cancel-order {
+    background-color: #e74c3c;
+}
+
+.button-overview .cancel-order:hover {
+    background-color: #c0392b;
+}
+
+.button-overview .return-order {
+    background-color: #f39c12;
+}
+
+.button-overview .return-order:hover {
+    background-color: #d68910;
+}
+
+.button-overview .buy-again {
+    background-color: #27ae60;
+}
+
+.button-overview .buy-again:hover {
+    background-color: #1e8449;
+}
+
+.button-overview .contact-seller {
+    background-color: #34495e;
+}
+
+.button-overview .contact-seller:hover {
+    background-color: #2c3e50;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .overview-order-inf-food {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .overview-order-inf-food-quantity,
+    .overview-order-inf-food-price {
+        width: auto;
+        text-align: left;
+    }
+}

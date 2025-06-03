@@ -20,14 +20,14 @@ const List = () => {
         <table>
           <thead>
             <tr>
-              <th>Items</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Remove</th>
-              <th>Update</th>
-              <th>Time</th>
+              <th>Sản phẩm</th>
+              <th>Tên</th>
+              <th>Giá</th>
+              <th>Mô tả</th>
+              <th>Loại</th>
+              <th>Xoá sản phẩm</th>
+              <th>Cập nhật</th>
+              <th>THời gian cập nhật</th>
             </tr>
           </thead>
           <tbody>

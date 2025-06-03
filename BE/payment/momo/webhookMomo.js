@@ -54,7 +54,7 @@ const handelWebHookMoMo = async (req, res) => {
         .populate("item.foodId");
       // console.log(order);
       if (order?.user_id?.email) {
-        await sendOrderEmail(order.user_id.email, order);
+        await sendOrderEmail(order.user_id.email, order,"success");
       }
       console.log("Thanh toán thành công với MoMo!");
       res.status(200).send("OK");

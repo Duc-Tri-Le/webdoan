@@ -1,11 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
+import "./ManagementOrder.css";
 
-const ManagementOrder = ({
-  stateOrder,
-  setStateOrder,
-}) => {
+const ManagementOrder = ({ stateOrder, setStateOrder }) => {
   const navigate = useNavigate();
   const { URL, token } = useContext(StoreContext);
   const [listOrder, setListOrder] = useState([]);
@@ -13,11 +11,39 @@ const ManagementOrder = ({
   const filteredOrders =
     stateOrder === "All"
       ? listOrder
+      : Array.isArray(stateOrder)
+      ? listOrder.filter((order) => stateOrder.includes(order.state))
       : listOrder.filter((order) => order.state === stateOrder);
 
   const handleBuyAgain = (order) => {
     navigate("/place-oder", { state: { order } });
   };
+
+  const updateOrder = async (orderId, state) => {
+    try {
+      const res = await fetch(`${URL}/api/order/update-order`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId, state: state }),
+      });
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const confirmReturn = async (orderId, stateOrder) => {
+    try {
+      const res = await fetch(`${URL}/api/order/return-order`,{
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId, stateOrder }),
+      })
+      return res
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const getListOrder = async () => {
     try {
@@ -49,25 +75,26 @@ const ManagementOrder = ({
     <div className="user-content-order">
       <div className="order-state">
         {[
-          "All",
-          "food processing",
-          "on delivery",
-          "shipped",
-          "cancelled",
-          "returned",
+          { label: "Tất cả", value: "All" },
+          { label: "Chờ xác nhận", value: "waiting for" },
+          { label: "Đang chuẩn bị", value: "food processing" },
+          { label: "Đang giao hàng", value: "on delivery" },
+          { label: "Đã giao", value: "shipped" },
+          { label: "Đã hủy", value: "cancelled" },
+          { label: "Đã hoàn trả", value: ["returned", "return request"] },
         ].map((state) => (
           <span
-            key={state}
-            className={stateOrder === state ? "active" : ""}
-            onClick={() => setStateOrder(state)}
+            key={state.value}
+            className={stateOrder === state.value ? "active" : ""}
+            onClick={() => setStateOrder(state.value)}
           >
-            {state.charAt(0).toUpperCase() + state.slice(1)}
+            {state.label}
           </span>
         ))}
       </div>
 
-      {filteredOrders.length > 0 ? (
-        filteredOrders.map((order, index) => (
+      {filteredOrders?.length > 0 ? (
+        filteredOrders?.map((order, index) => (
           <div key={index} className="overview-order">
             <span className="overview-order-state">{order.state}</span>
             <span className="overview-order-stacking_id">
@@ -79,6 +106,9 @@ const ManagementOrder = ({
             >
               {order?.item.map((food) => (
                 <div key={food.foodId._id} className="overview-order-inf-food">
+                  <span className="overview-order-inf-food-image">
+                    <img src={`${URL}/${food.foodId.image}`} />
+                  </span>
                   <span className="overview-order-inf-food-name">
                     {food.foodId.name}
                   </span>
@@ -92,32 +122,45 @@ const ManagementOrder = ({
               ))}
             </div>
             <div className="overview-order-foot">{order.total_price}</div>
-            <div className="button-overview">
-              <button className="contact-seller">Contact Seller</button>
+            <div className="overview-order-time">
+              {new Date(order.updatedAt).toLocaleString()}
             </div>
+            {/* <div className="button-overview">
+              <button className="contact-seller">Contact Seller</button>
+            </div> */}
 
-            {order.state === "food processing" && (
-              <div className="button-overview">
-                <button className="cancel-order">Cancel</button>
-              </div>
-            )}
-
-            {order.state === "shipped" && (
-              <div className="button-overview">
-                <button className="return-order">Return</button>
-              </div>
-            )}
-
-            {["shipped", "returned", "cancelled"].includes(order.state) && (
-              <div className="button-overview">
-                <button
-                  className="buy-again"
-                  onClick={() => handleBuyAgain(order)}
-                >
-                  Buy Again
-                </button>
-              </div>
-            )}
+            <div className="button-all">
+              {order.state === "waiting for" && (
+                <div className="button-overview">
+                  <button
+                    className="cancel-order"
+                    onClick={() => confirmReturn(order._id, "cancel")}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+              {order.state === "shipped" && (
+                <div className="button-overview">
+                  <button
+                    className="return-order"
+                    onClick={() => updateOrder(order._id, "return request")}
+                  >
+                    Return
+                  </button>
+                </div>
+              )}
+              {["shipped", "returned", "cancelled"].includes(order.state) && (
+                <div className="button-overview">
+                  <button
+                    className="buy-again"
+                    onClick={() => handleBuyAgain(order)}
+                  >
+                    Buy Again
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         ))
       ) : (

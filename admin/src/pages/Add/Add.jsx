@@ -107,7 +107,7 @@ const Add = () => {
 
         <div className="upload-info-input">
           <div className="input-name">
-            <p>Product name</p>
+            <p>Tên sản phẩm</p>
             <input
               value={data.name}
               onChange={onchangeInfo}
@@ -117,7 +117,7 @@ const Add = () => {
             />
           </div>
           <div className="input-price">
-            <p>Product price</p>
+            <p>Giá sản phẩm</p>
             <input
               value={data.price}
               onChange={onchangeInfo}
@@ -127,7 +127,7 @@ const Add = () => {
             />
           </div>
           <div className="input-description">
-            <p>Product description</p>
+            <p>Mô tẩn phẩm</p>
             <input
               value={data.description}
               onChange={onchangeInfo}
@@ -139,7 +139,7 @@ const Add = () => {
         </div>
 
         <div className="select-category">
-          <p>Product category</p>
+          <p>Loại sản phẩm</p>
           <select name="category" value={data.category} onChange={onchangeInfo}>
             <option>Chọn loại</option>
             <option value="beverage">đồ uống</option>
@@ -150,7 +150,7 @@ const Add = () => {
         </div>
 
         <div className="btn-upload">
-          <button onClick={update}>Upload</button>
+          <button onClick={update}>Thêm </button>
         </div>
       </form>
     </div>

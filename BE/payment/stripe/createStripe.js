@@ -1,11 +1,18 @@
 import stripe from "../../utils/stripeUtils.js";
+import orderModel from "../../models/orderModel.js";
 
-const createStripe = async (item, delivery_fee, total_price, userId, orderId) => {
+const createStripe = async (
+  item,
+  delivery_fee,
+  total_price,
+  userId,
+  orderId
+) => {
   const line_items = item.map((item) => ({
     price_data: {
       currency: "vnd",
       product_data: { name: item.name },
-      unit_amount: Math.round(total_price) * 1000,
+      unit_amount: Math.round(item.price),
     },
     quantity: item.quantity,
   }));
@@ -14,7 +21,7 @@ const createStripe = async (item, delivery_fee, total_price, userId, orderId) =>
     price_data: {
       currency: "vnd",
       product_data: { name: "Delivery Fee" },
-      unit_amount: delivery_fee * 1000,
+      unit_amount: delivery_fee,
     },
     quantity: 1,
   });
@@ -27,8 +34,18 @@ const createStripe = async (item, delivery_fee, total_price, userId, orderId) =>
     cancel_url: `${process.env.FRONTEND_URL}/cancel?orderId=${orderId}`,
     metadata: {
       userId,
-      orderId
+      orderId,
     },
+    payment_intent_data: {
+      metadata: {
+        userId,
+        orderId,
+      },
+    },
+  });
+
+  await orderModel.findByIdAndUpdate(orderId, {
+    payment_intent: session.payment_intent,
   });
 
   return {

@@ -7,9 +7,9 @@ const CompletePayment = () => {
   const searchParams = new URLSearchParams(location.search);
   const orderId = searchParams.get("orderId");
   const { URL, token } = useContext(StoreContext);
-  const [orderData, setOrderData] = useState(null); // Đặt mặc định là null
-  const [loading, setLoading] = useState(true); // Trạng thái loading
-  const [error, setError] = useState(null); // Trạng thái lỗi
+  const [orderData, setOrderData] = useState(null); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -1,114 +1,121 @@
-.wrapper {
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
+.wrapper-detail {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    font-family: "Segoe UI", sans-serif;
+    color: #333;
 }
 
 .detail-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .order-state-tracking {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .return {
-    cursor: pointer;
     color: #007bff;
-    font-weight: bold;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .order-tracking_id {
-    font-weight: bold;
-    color: #333;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 8px 0;
 }
 
 .order-sate {
-    background: #ffcc00;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-weight: 600;
+    background-color: #e6f0ff;
+    color: #0056b3;
+    font-size: 14px;
+}
+
+/* Địa chỉ */
+.detail-address p:first-child {
+    font-size: 18px;
     font-weight: bold;
-}
-
-.detail-mid {
-    margin-top: 20px;
-}
-
-.detail-address {
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.detail-address p {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .address p {
-    margin: 5px 0;
-    color: #444;
+    margin: 4px 0;
+    font-size: 14px;
+    color: #555;
 }
 
+/* Danh sách món ăn */
 .detail-order {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
     margin-top: 20px;
-    background: #f5f5f5;
-    padding: 15px;
+    margin-bottom: 24px;
+}
+
+.item-order-detail {
+    display: grid;
+    grid-template-columns: 60px 1fr 80px 80px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.image-order-detail img {
+    width: 60px;
+    height: 60px;
     border-radius: 8px;
+    object-fit: cover;
 }
 
-.item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+.name-order-detail {
+    font-weight: 500;
+    font-size: 15px;
+    word-break: break-word;
 }
 
-.item:last-child {
-    border-bottom: none;
+.quantity-order-detail,
+.price-order-detail {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
 }
 
-.name {
-    font-weight: bold;
-    color: #333;
-}
-
-.quantity {
-    font-weight: bold;
-    color: #007bff;
-}
-
+/* Hóa đơn */
 .detail-bill {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
     margin-top: 20px;
-    padding: 15px;
-    background: #eaf7e4;
-    border-radius: 8px;
 }
 
 .detail-bill p {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 5px 0;
+    margin: 6px 0;
+    font-size: 15px;
+    color: #444;
 }
 
+/* Responsive */
 @media (max-width: 600px) {
-    .wrapper {
-        padding: 10px;
+    .item-order-detail {
+        grid-template-columns: 50px 1fr;
+        grid-template-rows: auto auto;
     }
 
-    .detail-header,
-    .detail-order {
-        flex-direction: column;
-        align-items: flex-start;
+    .quantity-order-detail,
+    .price-order-detail {
+        text-align: left;
+        margin-left: 60px;
     }
 }

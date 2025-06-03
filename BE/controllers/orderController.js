@@ -4,6 +4,9 @@ import cartModel from "../models/cartModel.js";
 import createStripe from "../payment/stripe/createStripe.js";
 import createVnPay from "../payment/vnPay/createVnPay.js";
 import createMoMo from "../payment/momo/createMomo.js";
+import stripe from "../utils/stripeUtils.js";
+import sendOrderEmail from "../utils/sendMail.js";
+
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -20,7 +23,8 @@ const getOrder = async (req, res) => {
       .find({ user_id: req.userId })
       .populate("item.foodId")
       .populate("address");
-    return res.json({ success: true, data: orders });
+    const resOrder = orders.sort((a, b) => b.updatedAt - a.updatedAt);
+    return res.json({ success: true, data: resOrder });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -43,7 +47,7 @@ const addOrder = async (req, res) => {
     } = req.body;
 
     let payment_id = null;
-    let payment_status = false; // Mặc định đơn hàng chưa thanh toán
+    let payment_status = false;
     let order;
 
     const items = item.map((item) => ({
@@ -53,7 +57,6 @@ const addOrder = async (req, res) => {
 
     const order_create = new Date();
 
-    // Lưu đơn hàng vào database
     order = new orderModel({
       user_id: req.userId,
       total_price,
@@ -67,11 +70,10 @@ const addOrder = async (req, res) => {
       payment_gateAway: paymentGateway,
     });
 
-    await order.save(); // Lưu đơn hàng
+    await order.save();
 
-    await cartModel.findOneAndDelete({ user_id: req.userId }); // Xóa giỏ hàng sau khi tạo đơn
-    // console.log(order._id);
-    // Nếu chọn thanh toán online, tạo phiên Stripe
+    await cartModel.findOneAndDelete({ user_id: req.userId });
+
     if (payment_method === "online") {
       if (paymentGateway === "stripe") {
         // Dùng Stripe thanh toán thẻ
@@ -88,13 +90,15 @@ const addOrder = async (req, res) => {
         return res.status(200).json({ url: vnpayUrl });
       } else if (paymentGateway === "MoMo") {
         const moMoURL = await createMoMo(order);
-        // console.log(moMoURL);
+
         return res.status(200).json({ url: moMoURL });
       }
     }
+
+    const ordered = await order.populate("item.foodId");
     return res
       .status(200)
-      .json({ success: true, message: "Order created", order, item });
+      .json({ success: true, message: "Order created", ordered: ordered });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -137,7 +141,7 @@ const getListAdminOrder = async (req, res) => {
     const adminOrders = await orderModel
       .find({})
       .populate("item.foodId", "name price image");
-   
+
     res.status(200).json({ success: true, data: adminOrders });
   } catch (error) {
     res.status(500).json({ success: false, error: error });
@@ -166,10 +170,7 @@ const confirmOrder = async (req, res) => {
       orderUpdate.order_shipped = new Date();
     } else if (state === "cancelled") {
       orderUpdate.order_cancel = new Date();
-    } else if (state === "return") {
-      orderUpdate.order_return = new Date();
     }
-
     const updateOrder = await orderModel.findByIdAndUpdate(
       orderId,
       orderUpdate,
@@ -179,9 +180,10 @@ const confirmOrder = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
+    const allOrders = await orderModel.find().sort({ updatedAt: -1 });
     res.status(200).json({
       message: "Order updated successfully",
-      order: updateOrder,
+      order: allOrders,
     });
   } catch (error) {
     console.error("Error updating order:", error);
@@ -189,6 +191,80 @@ const confirmOrder = async (req, res) => {
   }
 };
 
+const confirmReturnOrder = async (req, res) => {
+  try {
+    const { orderId, stateOrder } = req.body;
+
+    const order = await orderModel
+      .findById(orderId)
+      .populate("user_id")
+      .populate("item.foodId");
+    if (!order)
+      return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
+
+    if (order.payment_method === "code") {
+      return await orderModel.findByIdAndUpdate(
+        orderId,
+        {
+          order_cancel: new Date(),
+          state: "cancelled",
+        },
+        {
+          new: true,
+        }
+      );
+    }
+    if(order.payment_gateAway !== "stripe"){
+      return await orderModel.findByIdAndUpdate(
+        orderId,
+        {
+          order_return: new Date(),
+          state: "returned",
+          refund_amount:order.total_price,
+        },
+        {
+          new: true,
+        }
+      );
+    }
+    if (!order.payment_intent) {
+      return res
+        .status(400)
+        .json({ message: "Đơn hàng chưa thanh toán qua Stripe" });
+    }
+    if (stateOrder === "returned" || stateOrder === "cancel") {
+      const refund = await stripe.refunds.create({
+        payment_intent: order.payment_intent,
+      });
+
+      order.state = stateOrder;
+      order.refund_id = refund.id;
+      order.order_return = new Date();
+      await order.save();
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Hoàn tiền thành công", order });
+    } else {
+      order.state = "shipped";
+      order.order_return = new Date();
+      await order.save();
+      if (order?.user_id?.email) {
+        sendOrderEmail(order.user_id.email, order, "refused");
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Từ chối hoàn tiền thành công",
+        order,
+      });
+    }
+  } catch (error) {
+    console.error("Stripe refund error:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Hoàn tiền thất bại" });
+  }
+};
 const searchOrder = async (req, res) => {
   try {
     const search = req.query.search?.trim().toLowerCase();
@@ -201,14 +277,16 @@ const searchOrder = async (req, res) => {
 
     const allOrders = await orderModel.find().populate("item.foodId");
 
-    const filteredOrders = allOrders.filter(
-      (order) =>
-        order.tracking_id?.toLowerCase().includes(search) ||
-        order.address?.phone?.toLowerCase().includes(search) ||
-        order.item.some((item) =>
-          item.foodId?.name?.toLowerCase().includes(search)
-        )
-    );
+    const filteredOrders = allOrders
+      .filter(
+        (order) =>
+          order.tracking_id?.toLowerCase().includes(search) ||
+          order.address?.phone?.toLowerCase().includes(search) ||
+          order.item.some((item) =>
+            item.foodId?.name?.toLowerCase().includes(search)
+          )
+      )
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
     if (filteredOrders.length === 0) {
       return res
@@ -230,7 +308,7 @@ const detailOrder = async (req, res) => {
       return res.status(400).json({ success: false, message: "no orderId" });
     }
     const order = await orderModel
-      .findOne({ _id: orderId })
+      .findById(orderId)
       .populate("item.foodId")
       .populate("user_id");
     if (!order) {
@@ -249,4 +327,5 @@ export {
   confirmOrder,
   searchOrder,
   detailOrder,
+  confirmReturnOrder,
 };

@@ -10,16 +10,23 @@ function ProductRecommendation() {
   }, [list]);
 
   const toggleRecommendation = (id) => {
-    setLocalList((prev) =>
-      prev.map((p) =>
-        p._id === id ? { ...p, isRecommended: !p.isRecommended } : p
-      )
-    );
+    setLocalList((prev) => {
+      const selectedCount = prev.filter((p) => p.isRecommended).length;
+      return prev.map((p) => {
+        if (p._id === id) {
+
+          if (p.isRecommended) return { ...p, isRecommended: false };
+
+          if (selectedCount < 8) return { ...p, isRecommended: true };
+
+          alert("Chỉ được chọn tối đa 8 sản phẩm khuyến nghị.");
+        }
+        return p;
+      });
+    });
   };
-  console.log(localList);
 
   const handleSave = async () => {
-
     try {
       await updateRecommendation(localList);
       alert("Cập nhật thành công! Trang sẽ được tải lại.");
@@ -57,7 +64,10 @@ function ProductRecommendation() {
           ))}
         </tbody>
       </table>
-      <button onClick={handleSave} style={{ marginTop: 16, padding: "8px 16px" }}>
+      <button
+        onClick={handleSave}
+        style={{ marginTop: 16, padding: "8px 16px" }}
+      >
         Lưu thay đổi
       </button>
     </div>

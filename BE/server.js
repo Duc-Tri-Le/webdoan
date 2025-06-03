@@ -5,6 +5,7 @@ import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRouter.js";
 import orderRouter from "./routes/orderRouter.js";
+import revenueRouter from "./routes/revenueRouter.js";
 import messageRouter from "./routes/messageRouter.js";
 import handelWebHook from "./payment/stripe/webhook.js";
 import handelWebHookMoMo from "./payment/momo/webhookMomo.js";
@@ -38,6 +39,7 @@ app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/message", messageRouter);
+app.use("/api/revenue", revenueRouter);
 //api webhook momo
 app.post("/api/webhookMoMo", handelWebHookMoMo);
 

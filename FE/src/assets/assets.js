@@ -1,8 +1,8 @@
 import logo from "./logo.png";
-import menu1 from "./menu1.png";
-import menu2 from "./menu2.png";
-import menu3 from "./menu3.png";
-import menu4 from "./menu4.png";
+import menu1 from "./menu1.jpg";
+import menu2 from "./menu2.jpg";
+import menu3 from "./menu3.jpg";
+import menu4 from "./menu4.jpg";
 import star from "./star.png";
 import remove from "./remove.svg";
 import add from "./add.svg";
@@ -21,10 +21,10 @@ const assets = {
 };
 
 const menu_list = [
-  { name: "salad", image: menu1 },
-  { name: "coca", image: menu2 },
-  { name: "chicken", image: menu3 },
-  { name: "duck", image: menu4 },
+  { name: "beverage", image: menu1 },
+  { name: "combo", image: menu2 },
+  { name: "food", image: menu3 },
+  { name: "dessert", image: menu4 },
 ];
 
 const arrange = ["price-asc", "price-desc", "rating-desc"];

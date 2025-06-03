@@ -28,7 +28,7 @@ const DetailOrder = () => {
   }, [tracking_id]);
 
   return (
-    <div className="wrapper">
+    <div className="wrapper-detail">
       <div className="detail-header">
         <div className="order-state-tracking">
           <div className="return">Return</div>
@@ -63,17 +63,22 @@ const DetailOrder = () => {
         </div>
       </div>
       <div className="detail-order">
-        {orderInf?.items?.map((item, index) => (
-          <div className="item" key={index}>
-            <div className="name">{item.foodId?.name || "No Name"}</div>
-            <div className="quantity">{item.quantity || 0}</div>
+        {orderInf?.item?.map((item, index) => (
+          <div className="item-order-detail" key={index}>
+            <div className="image-order-detail">
+              <img src={`${URL}/${item.foodId.image}`} alt="" className="item-image" />
+            </div>
+            <div className="name-order-detail">
+              {item.foodId?.name || "No Name"}
+            </div>
+            <div className="quantity-order-detail">{item.quantity}</div>
+            <div className="price-order-detail">{item.foodId.price}</div>
           </div>
         ))}
       </div>
       <div className="detail-bill">
         <p>{`Total price ${orderInf.total_price}`}</p>
         <p>{`Delivery_fee ${orderInf.delivery_fee}`}</p>
-        <p>{`Discount code ${orderInf.discount_code}`}</p>
         <p>{`Payment method ${orderInf.payment_method}`}</p>
       </div>
     </div>

@@ -18,9 +18,28 @@ const Management_Order = ({ item }) => {
         navigate("/cancel_management");
       } else if (stateOrder === "shipped") {
         navigate("/shipped_management");
-      }
+      } else if (stateOrder === "food processing") {
+        navigate("/process_management");
+      } else if (stateOrder === "returned") {
+        navigate("/return_management");
+      } 
     }
   };
+
+  const confirmReturn = async (orderId, stateOrder) => {
+    try {
+      const res = await fetch(`${URL}/api/order/return-order`,{
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId, stateOrder }),
+      })
+      window.location.reload()
+      return res
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   return (
     <div className="management-container">
@@ -57,10 +76,29 @@ const Management_Order = ({ item }) => {
           ))}
         </div>
         <div className="order-management-under">
+          {/* dang cho xac nhan */}
+          {item.state === "waiting for" && (
+            <div className="order-management-under-all">
+              <div className="order-management-price-time">
+                <span>{new Date(item.updatedAt).toLocaleString()}</span>
+                <span>{item.total_price}</span>
+              </div>
+              <div className="confirm-remove-order">
+                <button
+                  onClick={() =>
+                    handelChangeStateOrder(item._id, "food processing")
+                  }
+                >
+                  Chấp thuận đơn
+                </button>
+              </div>
+            </div>
+          )}
+          {/* cho van chuyen */}
           {item.state === "food processing" && (
             <div className="order-management-under-all">
               <div className="order-management-price-time">
-                <span>{new Date(item.order_create).toLocaleString()}</span>
+                <span>{new Date(item.updatedAt).toLocaleString()}</span>
                 <span>{item.total_price}</span>
               </div>
               <div className="confirm-remove-order">
@@ -69,66 +107,62 @@ const Management_Order = ({ item }) => {
                     handelChangeStateOrder(item._id, "on delivery")
                   }
                 >
-                  Confirm
-                </button>
-                <button
-                  onClick={() => handelChangeStateOrder(item._id, "cancelled")}
-                >
-                  Cancel
+                  Xác nhận đơn
                 </button>
               </div>
             </div>
           )}
+          {/* dang giao */}
           {item.state === "on delivery" && (
             <div className="order-management-under-all">
               <div className="order-management-price-time">
-                <span>{new Date(item.order_on_delivery).toLocaleString()}</span>
+                <span>{new Date(item.updatedAt).toLocaleString()}</span>
                 <span>{item.total_price}</span>
               </div>
               <div className="confirm-remove-order">
                 <button
                   onClick={() => handelChangeStateOrder(item._id, "shipped")}
                 >
-                  Shipped
+                  Đã giao
+                </button>
+              </div>
+            </div>
+          )}
+          {/* da hoan thanh, huy */}
+          {(item.state === "cancelled" || item.state === "shipped") && (
+            <div className="order-management-under-all">
+              <div className="order-management-price-time">
+                <span>{new Date(item.updatedAt).toLocaleString()}</span>
+                <span>{item.total_price}</span>
+              </div>
+            </div>
+          )}
+          {/* hoan tien */}
+          {(item.state === "return request") && (
+            <div className="order-management-under-all">
+              <div className="order-management-price-time">
+                <span>{new Date(item.updatedAt).toLocaleString()}</span>
+                <span>{item.total_price}</span>
+              </div>
+              <div className="confirm-remove-order">
+                <button
+                  onClick={() => confirmReturn(item._id, "returned")}
+                >
+                  Chấp nhận hoàn tiền
                 </button>
                 <button
-                  onClick={() => handelChangeStateOrder(item._id, "cancelled")}
+                  onClick={() => confirmReturn(item._id, "shipped")}
                 >
-                  Cancel
+                  Từ chối hoàn tiền
                 </button>
               </div>
             </div>
           )}
-          {item.state === "shipped" && (
+          {(item.state === "returned" ) && (
             <div className="order-management-under-all">
               <div className="order-management-price-time">
-                <span>{new Date(item.order_shipped).toLocaleString()}</span>
+                <span>{new Date(item.updatedAt).toLocaleString()}</span>
                 <span>{item.total_price}</span>
-              </div>
-              <div className="confirm-remove-order">
-                <button>Contact Shop</button>
-              </div>
-            </div>
-          )}
-          {item.state === "cancelled" && (
-            <div className="order-management-under-all">
-              <div className="order-management-price-time">
-                <span>{new Date(item.order_cancel).toLocaleString()}</span>
-                <span>{item.total_price}</span>
-              </div>
-              <div className="confirm-remove-order">
-                <button>Contact Shop</button>
-              </div>
-            </div>
-          )}
-          {item.state === "returned" && (
-            <div className="order-management-under-all">
-              <div className="order-management-price-time">
-                <span>{new Date(item.order_return).toLocaleString()}</span>
-                <span>{item.total_price}</span>
-              </div>
-              <div className="confirm-remove-order">
-                <button>Contact Shop</button>
               </div>
             </div>
           )}

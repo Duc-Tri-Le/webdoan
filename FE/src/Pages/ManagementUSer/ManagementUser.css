@@ -1,226 +1,82 @@
-.wrapper {
+.wrapper-managementUser {
     display: flex;
-    min-height: 100vh;
-    background-color: #f4f4f4;
-    padding: 20px;
-}
-
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    background-color: white;
-    padding: 20px;
+    min-height: 80vh;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #fafafa;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+    overflow: hidden;
 }
 
-.sidebar div {
-    padding: 10px 15px;
-    margin: 10px 0;
-    font-size: 16px;
-    font-weight: bold;
+/* Sidebar bên trái */
+.sidebar-managementUser {
+    width: 220px;
+    color: #333;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    user-select: none;
+    box-shadow: 2px 0 8px rgb(0 0 0 / 0.1);
+}
+
+/* Các mục trong sidebar */
+.sidebar-managementUser div {
+    padding: 14px 24px;
     cursor: pointer;
-    border-radius: 6px;
+    font-size: 1rem;
+    transition: background-color 0.25s ease;
     text-align: center;
 }
 
-.sidebar .notification {
-    background-color: #ff9800;
-    color: white;
+.sidebar-managementUser div:hover {
+    background-color: #3b82f6;
 }
 
-.sidebar .profile {
-    background-color: #4caf50;
-    color: white;
-}
-
-.sidebar .list-order {
-    background-color: #2196f3;
-    color: white;
-}
-
-/* Nội dung chính */
-.user-content-order {
-    flex: 1;
-    margin-left: 20px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.order-state {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-    background-color: #e0e0e0;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.order-state span {
-    cursor: pointer;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: 0.3s;
-    position: relative;
-}
-
-.order-state span:hover {
-    background-color: #2196f3;
-    color: white;
-}
-
-/* Khi trạng thái được chọn */
-.order-state .active {
-    color: #2196f3;
-    font-weight: bold;
-}
-
-/* Gạch chân trạng thái đang chọn */
-.order-state .active::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: -3px;
-    width: 60%;
-    height: 3px;
-    background-color: #2196f3;
-    transform: translateX(-50%);
-    border-radius: 5px;
-}
-
-/* Danh sách đơn hàng */
-.overview-order {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.overview-order-state {
-    font-size: 16px;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    display: inline-block;
+.sidebar-managementUser .profile {
+    font-weight: 600;
+    border-bottom: 1px solid #3b82f6;
     margin-bottom: 10px;
 }
 
-.overview-order-state.food-processing {
-    background-color: #ffeb3b;
-    color: #795548;
-}
-
-.overview-order-state.on-delivery {
-    background-color: #03a9f4;
-    color: white;
-}
-
-.overview-order-state.delivered {
-    background-color: #4caf50;
-    color: white;
-}
-
-.overview-order-state.cancelled {
-    background-color: #f44336;
-    color: white;
-}
-
-.overview-order-state.returned {
-    background-color: #9c27b0;
-    color: white;
-}
-
-/* Chi tiết món ăn trong đơn */
-.overview-order-inf {
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
+.sidebar-managementUser .list-order {
+    font-weight: 600;
+    border-bottom: 1px solid #3b82f6;
     margin-top: 10px;
 }
 
-.overview-order-inf-food {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    font-size: 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
+/* Nội dung hiển thị bên phải */
+.wrapper-managementUser> :not(.sidebar-managementUser) {
+    flex-grow: 1;
+    padding: 20px 30px;
+    background-color: white;
+    overflow-y: auto;
+    min-height: 80vh;
+    border-radius: 0 8px 8px 0;
+    box-shadow: inset 0 0 6px rgb(0 0 0 / 0.05);
 }
 
-.overview-order-inf-food-name {
-    font-weight: bold;
-    flex: 2;
-}
+/* Responsive: thu nhỏ sidebar trên màn hình nhỏ */
+@media (max-width: 768px) {
+    .wrapper-managementUser {
+        flex-direction: column;
+    }
 
-.overview-order-inf-food-price {
-    color: #d32f2f;
-    font-weight: bold;
-    flex: 1;
-    text-align: right;
-}
+    .sidebar-managementUser {
+        width: 100%;
+        flex-direction: row;
+        padding: 10px 0;
+        justify-content: space-around;
+    }
 
-/* Tổng tiền */
-.overview-order-foot {
-    text-align: right;
-    font-size: 18px;
-    font-weight: bold;
-    color: #e91e63;
-    margin-top: 10px;
-}
+    .sidebar-managementUser div {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
 
-.account-info {
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.account-info label {
-    font-weight: bold;
-    margin-bottom: 4px;
-}
-
-.account-info input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: all 0.3s ease-in-out;
-}
-
-.account-info input:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-.account-info input[disabled] {
-    background: #f0f0f0;
-    cursor: not-allowed;
-}
-
-.account-info button {
-    margin-top: 15px;
-    padding: 10px;
-    background: #007bff;
-    color: #fff;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.account-info button:hover {
-    background: #0056b3;
+    .wrapper-managementUser> :not(.sidebar-managementUser) {
+        padding: 15px 20px;
+        min-height: auto;
+    }
 }
