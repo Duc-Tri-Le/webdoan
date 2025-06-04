@@ -17,6 +17,7 @@
 .mua hàng: thanh toánn bằng tền mặc, online qua stripe, momo
 .hoàn tiền
 .quản lý đơn hàng của bản thân
+.kiểm ta trạng thái đơn hàng
 .quản lý thông tin cá nhân
 .chat với admin
 .đánh giá sản phẩm
