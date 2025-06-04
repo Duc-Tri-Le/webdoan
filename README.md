@@ -11,6 +11,7 @@
 +khách hàng
 +admin
 -Chức năng
++gửi mail
 +khách hàng
 .đăng nhập, đăng ký
 .thêm giỏ hàng
